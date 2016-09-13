@@ -7,6 +7,7 @@
     <groupId>net.freedomserg</groupId>
     <artifactId>project-restaurant</artifactId>
     <version>0.1</version>
+    <name>restaurant</name>
     <packaging>war</packaging>
 
     <properties>
@@ -19,6 +20,7 @@
         <jsp.version>2.3.1</jsp.version>
         <jstl.version>1.2</jstl.version>
         <spring.version>4.3.2.RELEASE</spring.version>
+        <jackson.version>2.8.2</jackson.version>
         <hibernate.version>5.2.2.Final</hibernate.version>
         <c3po.version>0.9.5.2</c3po.version>
         <postgre.version>9.4-1201-jdbc41</postgre.version>
@@ -44,7 +46,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-                    <warName>restaurant</warName>
                 </configuration>
                 <version>${maven.war.plugin.version}</version>
             </plugin>
@@ -96,6 +97,20 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <!--Spring-mvc-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!--Jackson-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!--Hibernate-Core-->
