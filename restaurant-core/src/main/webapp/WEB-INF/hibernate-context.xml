@@ -30,7 +30,7 @@
     <!--SessionFactory-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="net.freedomserg.restaurant.model.entity"/>
+        <property name="packagesToScan" value="net.freedomserg.restaurant.core.model.entity"/>
         <property name="hibernateProperties">
             <value>
                 hibernate.dialect=org.hibernate.dialect.PostgreSQL9Dialect

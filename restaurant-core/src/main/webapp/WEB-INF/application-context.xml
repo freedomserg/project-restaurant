@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--Bootstrap-->
+    <bean id="bootstrap" class="net.freedomserg.restaurant.core.main.Bootstrap">
+
+    </bean>
+
+    <!--hEmployeeDao-->
+    <bean id="hEmployeeDao" class="net.freedomserg.restaurant.core.model.hibernate.HEmployeeDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--employeeService-->
+    <bean id="employeeService" class="net.freedomserg.restaurant.core.service.EmployeeService">
+        <property name="employeeDao" ref="hEmployeeDao"/>
+    </bean>
+
+    <!--employeeController-->
+    <bean id="employeeController" class="net.freedomserg.restaurant.core.web.EmployeeController">
+        <property name="employeeService" ref="employeeService"/>
+    </bean>
+
+</beans>

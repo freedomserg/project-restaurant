@@ -7,11 +7,17 @@
     <groupId>net.freedomserg</groupId>
     <artifactId>project-restaurant</artifactId>
     <version>0.1</version>
+    <modules>
+        <module>restaurant-core</module>
+        <module>restaurant-user</module>
+        <module>restaurant-admin</module>
+    </modules>
     <name>restaurant</name>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <!-- Versions -->
+        <restaurant.version>0.1</restaurant.version>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <maven.compiler.plugin.source.version>1.8</maven.compiler.plugin.source.version>
         <maven.compiler.plugin.target.version>1.8</maven.compiler.plugin.target.version>
@@ -40,14 +46,6 @@
                     <source>${maven.compiler.plugin.source.version}</source>
                     <target>${maven.compiler.plugin.target.version}</target>
                 </configuration>
-            </plugin>
-            <!--maven-war-plugin-->
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-                </configuration>
-                <version>${maven.war.plugin.version}</version>
             </plugin>
         </plugins>
     </build>

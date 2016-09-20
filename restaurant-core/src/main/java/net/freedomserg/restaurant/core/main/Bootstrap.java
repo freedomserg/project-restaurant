@@ -1,4 +1,4 @@
-package net.freedomserg.restaurant.main;
+package net.freedomserg.restaurant.core.main;
 
 public class Bootstrap {
 
