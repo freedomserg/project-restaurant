@@ -9,7 +9,7 @@
                             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         ">
 
-    <context:component-scan base-package="net.freedomserg.restaurant.core.web"/>
+    <context:component-scan base-package="net.freedomserg.restaurant.adminLayer.web"/>
     <mvc:annotation-driven/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -27,6 +27,7 @@
             </list>
         </property>
     </bean>
+
     <!--converts Java objects to JSON and vice versa. For REST API-->
     <bean id="messageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 

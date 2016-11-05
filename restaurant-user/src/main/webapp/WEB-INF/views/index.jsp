@@ -4,6 +4,8 @@
     <title>Title</title>
 </head>
 <body>
-<a href="/restaurant/employees">Show all employees</a>
+    HELLO!!! Restaurant - user
+    <h1>Hello! It is ${currentTime} now</h1>
+    <a href="/restaurant/employees">Show all employees</a>
 </body>
 </html>
