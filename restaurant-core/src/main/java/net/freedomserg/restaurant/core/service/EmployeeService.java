@@ -15,33 +15,38 @@ public class EmployeeService {
         this.employeeDao = employeeDao;
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public void addEmployee(Employee employee) {
         employeeDao.saveEmployee(employee);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public void deleteEmployee(Employee employee) {
         employeeDao.removeEmployee(employee);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public void deleteEmployeeById(int id) {
         employeeDao.removeEmployeeById(id);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public Employee getByName(String name) {
         return employeeDao.loadByName(name);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public Employee getById(int id) {
         return employeeDao.loadById(id);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public List<Employee> getAll() {
         return employeeDao.findAll();
+    }
+
+    @Transactional
+    public void printEmployees() {
+        getAll().forEach(System.out::println);
     }
 }

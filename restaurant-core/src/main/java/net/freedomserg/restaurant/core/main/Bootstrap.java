@@ -22,8 +22,6 @@ public class Bootstrap {
     }
 
     private void start() {
-        //hEmployeeController.printEmployees();
         employeeService.getAll().forEach(System.out::println);
-
     }
 }
