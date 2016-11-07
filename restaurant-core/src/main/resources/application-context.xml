@@ -3,9 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--Bootstrap-->
+    <!--bootstrap-->
     <bean id="bootstrap" class="net.freedomserg.restaurant.core.main.Bootstrap">
-
+        <property name="employeeService" ref="employeeService"/>
     </bean>
 
     <!--hEmployeeDao-->
@@ -16,11 +16,6 @@
     <!--employeeService-->
     <bean id="employeeService" class="net.freedomserg.restaurant.core.service.EmployeeService">
         <property name="employeeDao" ref="hEmployeeDao"/>
-    </bean>
-
-    <!--employeeController-->
-    <bean id="employeeController" class="net.freedomserg.restaurant.core.web.EmployeeController">
-        <property name="employeeService" ref="employeeService"/>
     </bean>
 
 </beans>
