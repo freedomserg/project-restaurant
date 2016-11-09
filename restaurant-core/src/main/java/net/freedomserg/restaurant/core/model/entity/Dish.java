@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "dish")
@@ -20,6 +21,14 @@ public class Dish {
     @ManyToOne
     @JoinColumn(name = "category")
     private Category category;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ingredient_to_dish",
+            joinColumns = @JoinColumn(name = "dish_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private List<Ingredient> ingredients;
 
     @Column(name = "price")
     private double price;
@@ -67,6 +76,14 @@ public class Dish {
         this.weight = weight;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,7 +92,8 @@ public class Dish {
         if (Double.compare(dish.price, price) != 0) return false;
         if (weight != dish.weight) return false;
         if (dishName != null ? !dishName.equals(dish.dishName) : dish.dishName != null) return false;
-        return category != null ? category.equals(dish.category) : dish.category == null;
+        if (category != null ? !category.equals(dish.category) : dish.category != null) return false;
+        return ingredients != null ? ingredients.equals(dish.ingredients) : dish.ingredients == null;
 
     }
 
@@ -85,6 +103,7 @@ public class Dish {
         long temp;
         result = dishName != null ? dishName.hashCode() : 0;
         result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + weight;
@@ -93,12 +112,16 @@ public class Dish {
 
     @Override
     public String toString() {
-        return "Dish{" +
-                "dishId=" + dishId +
-                ", dishName='" + dishName + '\'' +
-                ", category=" + category +
-                ", price=" + price +
-                ", weight=" + weight +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append("Dish{");
+        builder.append("dishId=").append(dishId);
+        builder.append(", dishName=").append(dishName);
+        builder.append(", category=").append(category);
+        builder.append(", ingredients:").append("\n");
+        ingredients.forEach(ingredient -> builder.append(ingredient).append("\n"));
+        builder.append(", price=").append(price);
+        builder.append(", weight=").append(weight);
+        builder.append("}");
+        return builder.toString();
     }
 }
