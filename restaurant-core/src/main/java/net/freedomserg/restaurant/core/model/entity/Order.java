@@ -120,13 +120,16 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", waiter=" + waiter +
-                ", tableNumber=" + tableNumber +
-                ", dishes=" + dishes +
-                ", orderDate=" + orderDate +
-                ", state=" + state +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append("Order{");
+        builder.append("orderId=").append(orderId);
+        builder.append(", waiter=").append(waiter);
+        builder.append(", tableNumber=").append(tableNumber);
+        builder.append(", orderDate=").append(orderDate);
+        builder.append(", dishes:").append("\n");
+        dishes.forEach(dish -> builder.append(dish).append("\n"));
+        builder.append(", state=").append(state);
+        builder.append("}");
+        return builder.toString();
     }
 }
