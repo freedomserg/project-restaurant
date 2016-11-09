@@ -84,9 +84,8 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        if (id != employee.id) return false;
         if (Double.compare(employee.salary, salary) != 0) return false;
-        if (!name.equals(employee.name)) return false;
+        if (name != null ? !name.equals(employee.name) : employee.name != null) return false;
         if (birthday != null ? !birthday.equals(employee.birthday) : employee.birthday != null) return false;
         if (cell != null ? !cell.equals(employee.cell) : employee.cell != null) return false;
         return position != null ? position.equals(employee.position) : employee.position == null;
@@ -97,8 +96,7 @@ public class Employee {
     public int hashCode() {
         int result;
         long temp;
-        result = id;
-        result = 31 * result + name.hashCode();
+        result = name != null ? name.hashCode() : 0;
         result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
         result = 31 * result + (cell != null ? cell.hashCode() : 0);
         result = 31 * result + (position != null ? position.hashCode() : 0);
