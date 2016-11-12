@@ -32,15 +32,6 @@ public class HEmployeeDao implements EmployeeDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void removeEmployeeById(int id) {
-        Employee employee = sessionFactory.getCurrentSession().load(Employee.class, id);
-        if (employee != null) {
-            sessionFactory.getCurrentSession().delete(employee);
-        }
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.MANDATORY)
     public Employee loadByName(String name) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery
@@ -50,9 +41,8 @@ public class HEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
-    public Employee loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Employee.class, id);
+    public Employee updateEmployee(Employee employee) {
+        return null;
     }
 
     @Override
