@@ -9,7 +9,7 @@
     </bean>
 
     <!--hEmployeeDao-->
-    <bean id="hEmployeeDao" class="net.freedomserg.restaurant.core.model.hibernate.HEmployeeDao">
+    <bean id="hEmployeeDao" class="net.freedomserg.restaurant.core.model.hibernate.hEmployeeDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

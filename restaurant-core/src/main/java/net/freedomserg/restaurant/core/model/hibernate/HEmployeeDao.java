@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Query;
 import java.util.List;
 
-public class HEmployeeDao implements EmployeeDao {
+public class hEmployeeDao implements EmployeeDao {
 
     private SessionFactory sessionFactory;
 
