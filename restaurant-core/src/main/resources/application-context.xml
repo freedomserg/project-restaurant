@@ -28,6 +28,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <!--hMenuDao-->
+    <bean id="hMenuDao" class="net.freedomserg.restaurant.core.model.hibernate.HmenuDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <!--employeeService-->
     <bean id="employeeService" class="net.freedomserg.restaurant.core.service.EmployeeService">
         <property name="employeeDao" ref="hEmployeeDao"/>
