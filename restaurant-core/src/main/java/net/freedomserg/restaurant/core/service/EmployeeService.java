@@ -41,7 +41,7 @@ public class EmployeeService {
 
     @Transactional
     public List<Employee> getAll() {
-        return employeeDao.findAll();
+        return employeeDao.loadAll();
     }
 
     @Transactional

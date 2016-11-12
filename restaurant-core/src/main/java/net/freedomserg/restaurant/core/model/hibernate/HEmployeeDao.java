@@ -47,7 +47,7 @@ public class HEmployeeDao implements EmployeeDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public List<Employee> findAll() {
+    public List<Employee> loadAll() {
         return sessionFactory.getCurrentSession().createQuery("SELECT e FROM Employee e").list();
     }
 }

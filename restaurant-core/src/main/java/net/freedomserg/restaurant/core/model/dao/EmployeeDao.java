@@ -14,5 +14,5 @@ public interface EmployeeDao {
 
     void update(Employee employee);
 
-    List<Employee> findAll();
+    List<Employee> loadAll();
 }
