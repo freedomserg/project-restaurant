@@ -41,8 +41,9 @@ public class HEmployeeDao implements EmployeeDao {
     }
 
     @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public void update(Employee employee) {
-
+        sessionFactory.getCurrentSession().update(employee);
     }
 
     @Override
