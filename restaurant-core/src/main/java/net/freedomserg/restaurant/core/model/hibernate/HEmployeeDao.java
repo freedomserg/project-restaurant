@@ -20,13 +20,13 @@ public class HEmployeeDao implements EmployeeDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void saveEmployee(Employee employee) {
+    public void save(Employee employee) {
         sessionFactory.getCurrentSession().save(employee);
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void removeEmployee(Employee employee) {
+    public void remove(Employee employee) {
         sessionFactory.getCurrentSession().delete(employee);
     }
 
@@ -41,7 +41,7 @@ public class HEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    public Employee updateEmployee(Employee employee) {
+    public Employee update(Employee employee) {
         return null;
     }
 

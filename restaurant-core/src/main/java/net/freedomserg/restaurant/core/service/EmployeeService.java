@@ -2,7 +2,6 @@ package net.freedomserg.restaurant.core.service;
 
 import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,12 +16,12 @@ public class EmployeeService {
 
     @Transactional
     public void addEmployee(Employee employee) {
-        employeeDao.saveEmployee(employee);
+        employeeDao.save(employee);
     }
 
     @Transactional
     public void deleteEmployee(Employee employee) {
-        employeeDao.removeEmployee(employee);
+        employeeDao.remove(employee);
     }
 
     @Transactional
