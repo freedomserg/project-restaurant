@@ -12,7 +12,7 @@ public interface EmployeeDao {
 
     Employee loadByName(String name);
 
-    Employee update(Employee employee);
+    void update(Employee employee);
 
     List<Employee> findAll();
 }

@@ -41,8 +41,8 @@ public class HEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    public Employee update(Employee employee) {
-        return null;
+    public void update(Employee employee) {
+
     }
 
     @Override
