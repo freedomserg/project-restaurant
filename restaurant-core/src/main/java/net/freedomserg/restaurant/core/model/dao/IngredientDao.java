@@ -14,5 +14,5 @@ public interface IngredientDao {
 
     Ingredient loadByName(String name);
 
-    List<Ingredient> findAll();
+    List<Ingredient> loadAll();
 }
