@@ -18,6 +18,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <!--hCategoryDao-->
+    <bean id="hCategoryDao" class="net.freedomserg.restaurant.core.model.hibernate.HcategoryDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <!--employeeService-->
     <bean id="employeeService" class="net.freedomserg.restaurant.core.service.EmployeeService">
         <property name="employeeDao" ref="hEmployeeDao"/>
