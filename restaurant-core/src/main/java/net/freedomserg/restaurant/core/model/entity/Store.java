@@ -9,8 +9,6 @@ import javax.persistence.*;
 public class Store {
 
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "ingredient_id")
     private int ingredientId;
 

@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface StoreDao {
 
-    void saveIngredient(Ingredient ingredient);
+    void save(Store store);
 
-    void removeIngredient(Ingredient ingredient);
+    void remove(Store store);
 
-    void updateQuantity(Ingredient ingredient, int quantity);
+    void update(Store store);
 
     Store loadByName(String name);
 
