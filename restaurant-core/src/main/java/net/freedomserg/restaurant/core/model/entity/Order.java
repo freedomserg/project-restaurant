@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -123,9 +124,8 @@ public class Order {
         StringBuilder builder = new StringBuilder();
         builder.append("Order{");
         builder.append("orderId=").append(orderId);
-        builder.append(", waiter=").append(waiter);
         builder.append(", tableNumber=").append(tableNumber);
-        builder.append(", orderDate=").append(orderDate);
+        builder.append(", orderDate=").append(new SimpleDateFormat("dd/MM/yyyy").format(orderDate));
         builder.append(", dishes:").append("\n");
         dishes.forEach(dish -> builder.append(dish).append("\n"));
         builder.append(", state=").append(state);
