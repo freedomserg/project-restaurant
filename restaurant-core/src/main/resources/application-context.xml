@@ -7,6 +7,7 @@
     <bean id="bootstrap" class="net.freedomserg.restaurant.core.main.Bootstrap">
         <property name="employeeService" ref="employeeService"/>
         <property name="categoryService" ref="categoryService"/>
+        <property name="menuService" ref="menuService"/>
     </bean>
 
     <!--hEmployeeDao-->
@@ -53,6 +54,11 @@
     <!--categoryService-->
     <bean id="categoryService" class="net.freedomserg.restaurant.core.service.CategoryService">
         <property name="categoryDao" ref="hCategoryDao"/>
+    </bean>
+
+    <!--menuService-->
+    <bean id="menuService" class="net.freedomserg.restaurant.core.service.MenuService">
+        <property name="menuDao" ref="hMenuDao"/>
     </bean>
 
 </beans>
