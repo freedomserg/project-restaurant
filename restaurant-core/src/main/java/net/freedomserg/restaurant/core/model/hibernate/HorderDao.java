@@ -5,7 +5,7 @@ import net.freedomserg.restaurant.core.model.entity.Order;
 import net.freedomserg.restaurant.core.model.entity.OrderState;
 import net.freedomserg.restaurant.core.model.entity.Waiter;
 import net.freedomserg.restaurant.core.model.exception.InvalidDateRestaurantException;
-import net.freedomserg.restaurant.core.model.exception.OrderIsClosedRestaurantException;
+import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +34,7 @@ public class HorderDao implements OrderDao {
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Order order) {
         if (order.getState().equals(OrderState.CLOSED)) {
-            throw new OrderIsClosedRestaurantException("Order is closed! Cannot remove or modify.");
+            throw new IllegalOperationRestaurantException("Order is closed! Cannot remove or modify.");
         }
         sessionFactory.getCurrentSession().delete(order);
     }
@@ -43,7 +43,7 @@ public class HorderDao implements OrderDao {
     @Transactional(propagation = Propagation.MANDATORY)
     public void update(Order order) {
         if (order.getState().equals(OrderState.CLOSED)) {
-            throw new OrderIsClosedRestaurantException("Order is closed! Cannot remove or modify.");
+            throw new IllegalOperationRestaurantException("Order is closed! Cannot remove or modify.");
         }
         sessionFactory.getCurrentSession().update(order);
     }
