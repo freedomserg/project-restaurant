@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
+import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +28,13 @@ public class HemployeeDao implements EmployeeDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Employee employee) {
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT o FROM Order o WHERE o.waiter.id = :waiter");
+        query.setParameter("waiter", employee.getId());
+        if (query.getResultList().size() > 0) {
+            throw new IllegalOperationRestaurantException
+                    ("The waiter has some orders! Cannot remove this employee!");
+        }
         sessionFactory.getCurrentSession().delete(employee);
     }
 
