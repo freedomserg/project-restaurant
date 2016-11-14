@@ -1,10 +1,13 @@
 package net.freedomserg.restaurant.core.main;
 
 import net.freedomserg.restaurant.core.model.entity.Category;
+import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.service.CategoryService;
 import net.freedomserg.restaurant.core.service.EmployeeService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Date;
 
 public class Bootstrap {
 
@@ -28,29 +31,37 @@ public class Bootstrap {
 
     }
 
-    private Category createCategory() {
-        Category category = new Category();
-        category.setCategoryName("fish");
-        return category;
+    private Employee createEmployee() {
+        Employee employee = new Employee();
+        employee.setName("Petro");
+        employee.setBirthday(new Date());
+        employee.setCell("000");
+        employee.setPosition("owner");
+        employee.setSalary(50000);
+        return employee;
     }
 
-    private Category updateCategory() {
-        Category category = new Category();
-        category.setCategoryId(4);
-        category.setCategoryName("sea fish");
-        return category;
+    private Employee updateEmployee() {
+        Employee employee = new Employee();
+        employee.setId(9);
+        employee.setName("Peter");
+        employee.setBirthday(new Date());
+        employee.setCell("000");
+        employee.setPosition("owner");
+        employee.setSalary(50000);
+        return employee;
     }
 
     private void start() {
-        Category category = new Category();
-        category.setCategoryId(4);
-        category.setCategoryName("sea fish");
+        Employee employee = new Employee();
+        employee.setId(9);
+        employee.setName("Peter");
+        employee.setBirthday(new Date());
+        employee.setCell("000");
+        employee.setPosition("owner");
+        employee.setSalary(50000);
 
-        categoryService.delete(category);
-
-        //Category category = categoryService.getByName("sea fish");
-        //System.out.println(category);
-
-        categoryService.getAll().forEach(System.out::println);
+        employeeService.delete(employee);
+        employeeService.getAll().forEach(System.out::println);
     }
 }
