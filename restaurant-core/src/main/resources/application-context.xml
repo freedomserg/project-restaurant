@@ -43,7 +43,7 @@
     </bean>
 
     <!--hStoreDao-->
-    <bean class="net.freedomserg.restaurant.core.model.hibernate.HstoreDao">
+    <bean id="hStoreDao" class="net.freedomserg.restaurant.core.model.hibernate.HstoreDao">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="ingredientDao" ref="hIngredientDao"/>
     </bean>
@@ -71,6 +71,11 @@
     <!--dishService-->
     <bean id="dishService" class="net.freedomserg.restaurant.core.service.DishService">
         <property name="dishDao" ref="hDishDao"/>
+    </bean>
+
+    <!--storeService-->
+    <bean id="storeService" class="net.freedomserg.restaurant.core.service.StoreService">
+        <property name="storeDao" ref="hStoreDao"/>
     </bean>
 
 </beans>
