@@ -40,9 +40,9 @@ public class Order {
     @Column(name = "order_date")
     private Date orderDate;
 
-    @Column(name = "order_state")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private OrderState state;
+    private OrderStatus status;
 
     public int getOrderId() {
         return orderId;
@@ -84,27 +84,25 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public OrderState getState() {
-        return state;
+    public OrderStatus getStatus() {
+        return status;
     }
 
-    public void setState(OrderState state) {
-        this.state = state;
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Order order = (Order) o;
-
         if (orderId != order.orderId) return false;
         if (tableNumber != order.tableNumber) return false;
         if (waiter != null ? !waiter.equals(order.waiter) : order.waiter != null) return false;
         if (dishes != null ? !dishes.equals(order.dishes) : order.dishes != null) return false;
         if (orderDate != null ? !orderDate.equals(order.orderDate) : order.orderDate != null) return false;
-        return state == order.state;
+        return status == order.status;
 
     }
 
@@ -115,7 +113,7 @@ public class Order {
         result = 31 * result + tableNumber;
         result = 31 * result + (dishes != null ? dishes.hashCode() : 0);
         result = 31 * result + (orderDate != null ? orderDate.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
@@ -128,7 +126,7 @@ public class Order {
         builder.append(", orderDate=").append(new SimpleDateFormat("dd/MM/yyyy").format(orderDate));
         builder.append(", dishes:").append("\n");
         dishes.forEach(dish -> builder.append(dish).append("\n"));
-        builder.append(", state=").append(state);
+        builder.append(", status=").append(status);
         builder.append("}");
         return builder.toString();
     }

@@ -15,6 +15,10 @@ public class Store {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public int getIngredientId() {
         return ingredientId;
     }
@@ -29,5 +33,39 @@ public class Store {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        if (ingredientId != store.ingredientId) return false;
+        return quantity == store.quantity;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ingredientId;
+        result = 31 * result + quantity;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "ingredientId=" + ingredientId +
+                ", quantity=" + quantity +
+                ", status=" + status +
+                '}';
     }
 }

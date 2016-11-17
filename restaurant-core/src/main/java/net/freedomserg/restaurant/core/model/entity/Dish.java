@@ -36,6 +36,10 @@ public class Dish {
     @Column(name = "weight")
     private int weight;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public int getDishId() {
         return dishId;
     }
@@ -84,6 +88,14 @@ public class Dish {
         this.ingredients = ingredients;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,6 +133,7 @@ public class Dish {
         ingredients.forEach(ingredient -> builder.append(ingredient).append("\n"));
         builder.append(", price=").append(price);
         builder.append(", weight=").append(weight);
+        builder.append(", status=").append(status);
         builder.append("}");
         return builder.toString();
     }

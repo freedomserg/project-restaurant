@@ -26,6 +26,10 @@ public class Menu {
     )
     private List<Dish> dishes;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public int getMenuId() {
         return menuId;
     }
@@ -48,6 +52,14 @@ public class Menu {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
@@ -75,6 +87,7 @@ public class Menu {
         builder.append(", menuName=").append(menuName);
         builder.append(", dishes:").append("\n");
         dishes.forEach(dish -> builder.append(dish).append("\n"));
+        builder.append(", status=").append(status);
         builder.append("}");
         return builder.toString();
     }

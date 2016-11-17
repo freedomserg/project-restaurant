@@ -17,6 +17,10 @@ public class Ingredient {
     @Column(name = "ingredient_name")
     private String ingredientName;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public int getIngredientId() {
         return ingredientId;
     }
@@ -33,13 +37,19 @@ public class Ingredient {
         this.ingredientName = ingredientName;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Ingredient that = (Ingredient) o;
-
         return ingredientName != null ? ingredientName.equals(that.ingredientName) : that.ingredientName == null;
 
     }
@@ -54,6 +64,7 @@ public class Ingredient {
         return "Ingredient{" +
                 "ingredientId=" + ingredientId +
                 ", ingredientName='" + ingredientName + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

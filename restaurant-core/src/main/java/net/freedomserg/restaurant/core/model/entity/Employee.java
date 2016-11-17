@@ -31,6 +31,10 @@ public class Employee {
     @Column(name = "salary")
     private double salary;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public int getId() {
         return id;
     }
@@ -79,6 +83,14 @@ public class Employee {
         this.salary = salary;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,6 +126,7 @@ public class Employee {
                 ", cell='" + cell + '\'' +
                 ", position='" + position + '\'' +
                 ", salary=" + salary +
+                ", status=" + status +
                 '}';
     }
 }

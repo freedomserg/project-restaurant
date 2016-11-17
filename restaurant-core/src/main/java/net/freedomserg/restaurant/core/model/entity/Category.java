@@ -17,6 +17,10 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public int getCategoryId() {
         return categoryId;
     }
@@ -31,6 +35,14 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
@@ -52,6 +64,7 @@ public class Category {
         return "Category{" +
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
