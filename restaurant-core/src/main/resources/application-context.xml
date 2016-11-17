@@ -9,6 +9,7 @@
         <property name="categoryService" ref="categoryService"/>
         <property name="menuService" ref="menuService"/>
         <property name="ingredientService" ref="ingredientService"/>
+        <property name="dishService" ref="dishService"/>
     </bean>
 
     <!--hEmployeeDao-->
@@ -65,6 +66,11 @@
     <!--ingredientService-->
     <bean id="ingredientService" class="net.freedomserg.restaurant.core.service.IngredientService">
         <property name="ingredientDao" ref="hIngredientDao"/>
+    </bean>
+
+    <!--dishService-->
+    <bean id="dishService" class="net.freedomserg.restaurant.core.service.DishService">
+        <property name="dishDao" ref="hDishDao"/>
     </bean>
 
 </beans>
