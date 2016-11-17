@@ -1,5 +1,6 @@
 package net.freedomserg.restaurant.core.model.entity;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -26,9 +27,10 @@ public class Menu {
     )
     private List<Dish> dishes;
 
-    @Column(name = "status", columnDefinition = "character varying(7) default 'ACTUAL'")
+
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTUAL;
 
     public int getMenuId() {
         return menuId;

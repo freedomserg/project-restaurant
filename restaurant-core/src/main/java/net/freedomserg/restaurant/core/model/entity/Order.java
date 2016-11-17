@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import java.util.List;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "orderId")
+@Proxy(lazy = false)
 public class Order {
 
     @Id
@@ -40,9 +42,9 @@ public class Order {
     @Column(name = "order_date")
     private Date orderDate;
 
-    @Column(name = "status", columnDefinition = "character varying(10) default 'OPENED'")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.OPENED;
 
     public int getOrderId() {
         return orderId;
