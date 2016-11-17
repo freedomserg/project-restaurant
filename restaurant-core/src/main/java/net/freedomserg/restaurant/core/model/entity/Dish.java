@@ -36,7 +36,7 @@ public class Dish {
     @Column(name = "weight")
     private int weight;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "character varying(7) default 'ACTUAL'")
     @Enumerated(EnumType.STRING)
     private Status status;
 

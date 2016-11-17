@@ -17,7 +17,7 @@ public class Ingredient {
     @Column(name = "ingredient_name")
     private String ingredientName;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "character varying(7) default 'ACTUAL'")
     @Enumerated(EnumType.STRING)
     private Status status;
 

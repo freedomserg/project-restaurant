@@ -17,7 +17,7 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "character varying(7) default 'ACTUAL'")
     @Enumerated(EnumType.STRING)
     private Status status;
 

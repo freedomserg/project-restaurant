@@ -31,7 +31,7 @@ public class Employee {
     @Column(name = "salary")
     private double salary;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "character varying(7) default 'ACTUAL'")
     @Enumerated(EnumType.STRING)
     private Status status;
 

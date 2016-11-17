@@ -40,7 +40,7 @@ public class Order {
     @Column(name = "order_date")
     private Date orderDate;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "character varying(10) default 'OPENED'")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
