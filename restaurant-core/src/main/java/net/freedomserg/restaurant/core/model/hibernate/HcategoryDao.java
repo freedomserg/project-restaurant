@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.CategoryDao;
 import net.freedomserg.restaurant.core.model.entity.Category;
+import net.freedomserg.restaurant.core.model.entity.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +28,8 @@ public class HcategoryDao implements CategoryDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Category category) {
-        sessionFactory.getCurrentSession().delete(category);
+        category.setStatus(Status.DELETED);
+        sessionFactory.getCurrentSession().update(category);
     }
 
     @Override
@@ -39,15 +41,19 @@ public class HcategoryDao implements CategoryDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Category loadByName(String name) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT c FROM Category c WHERE c.categoryName like :name");
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT c FROM Category c WHERE c.categoryName like :name AND c.status = :status");
         query.setParameter("name", name);
+        query.setParameter("status", Status.ACTUAL);
         return (Category)query.getSingleResult();
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Category> loadAll() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT c FROM Category c").list();
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT c FROM Category c WHERE c.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
     }
 }

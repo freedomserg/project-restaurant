@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
+import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,23 +29,17 @@ public class HemployeeDao implements EmployeeDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Employee employee) {
-        Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT o FROM Order o WHERE o.waiter.id = :waiter");
-        query.setParameter("waiter", employee.getId());
-        if (query.getResultList().size() > 0) {
-            throw new IllegalOperationRestaurantException
-                    ("The waiter has some orders! Cannot remove this employee!");
-        }
-        sessionFactory.getCurrentSession().delete(employee);
+        employee.setStatus(Status.DELETED);
+        sessionFactory.getCurrentSession().update(employee);
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Employee loadByName(String name) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery
-                ("SELECT e FROM Employee e WHERE e.name like :name");
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT e FROM Employee e WHERE e.name like :name AND e.status = :status");
         query.setParameter("name", name);
+        query.setParameter("status", Status.ACTUAL);
         return (Employee) query.getSingleResult();
     }
 
@@ -57,6 +52,9 @@ public class HemployeeDao implements EmployeeDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Employee> loadAll() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT e FROM Employee e").list();
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT e FROM Employee e WHERE e.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
     }
 }

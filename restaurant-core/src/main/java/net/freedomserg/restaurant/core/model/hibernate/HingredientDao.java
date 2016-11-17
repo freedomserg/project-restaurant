@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
+import net.freedomserg.restaurant.core.model.entity.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,7 +29,8 @@ public class HingredientDao implements IngredientDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Ingredient ingredient) {
-        sessionFactory.getCurrentSession().delete(ingredient);
+        ingredient.setStatus(Status.DELETED);
+        sessionFactory.getCurrentSession().update(ingredient);
     }
 
     @Override
@@ -40,16 +42,19 @@ public class HingredientDao implements IngredientDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Ingredient loadByName(String name) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery
-                ("SELECT i FROM Ingredient i WHERE i.ingredientName like :name");
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT i FROM Ingredient i WHERE i.ingredientName like :name AND i.status = :status");
         query.setParameter("name", name);
+        query.setParameter("status", Status.ACTUAL);
         return (Ingredient) query.getSingleResult();
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Ingredient> loadAll() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT i FROM Ingredient i").list();
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT i FROM Ingredient i WHERE i.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
     }
 }

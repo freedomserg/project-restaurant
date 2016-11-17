@@ -2,9 +2,9 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.OrderDao;
 import net.freedomserg.restaurant.core.model.entity.Order;
-import net.freedomserg.restaurant.core.model.entity.OrderState;
+import net.freedomserg.restaurant.core.model.entity.OrderStatus;
 import net.freedomserg.restaurant.core.model.entity.Waiter;
-import net.freedomserg.restaurant.core.model.exception.InvalidDateRestaurantException;
+import net.freedomserg.restaurant.core.model.exception.InvalidOrderDateRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,7 +33,7 @@ public class HorderDao implements OrderDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Order order) {
-        if (order.getState().equals(OrderState.CLOSED)) {
+        if (order.getStatus().equals(OrderStatus.CLOSED)) {
             throw new IllegalOperationRestaurantException("Order is closed! Cannot remove or modify.");
         }
         sessionFactory.getCurrentSession().delete(order);
@@ -42,7 +42,7 @@ public class HorderDao implements OrderDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void update(Order order) {
-        if (order.getState().equals(OrderState.CLOSED)) {
+        if (order.getStatus().equals(OrderStatus.CLOSED)) {
             throw new IllegalOperationRestaurantException("Order is closed! Cannot remove or modify.");
         }
         sessionFactory.getCurrentSession().update(order);
@@ -68,7 +68,7 @@ public class HorderDao implements OrderDao {
         try {
             inputDate = dateFormat.parse(date);
         } catch (ParseException e) {
-            throw new InvalidDateRestaurantException("Invalid input date format!");
+            throw new InvalidOrderDateRestaurantException("Invalid input date format!");
         }
         Date sqlDate = new Date(inputDate.getTime());
         Query query = sessionFactory.getCurrentSession().createQuery

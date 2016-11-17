@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.MenuDao;
 import net.freedomserg.restaurant.core.model.entity.Menu;
+import net.freedomserg.restaurant.core.model.entity.Status;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,8 @@ public class HmenuDao implements MenuDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Menu menu) {
-        sessionFactory.getCurrentSession().delete(menu);
+        menu.setStatus(Status.DELETED);
+        sessionFactory.getCurrentSession().update(menu);
     }
 
     @Override
@@ -39,14 +41,18 @@ public class HmenuDao implements MenuDao {
     @Transactional(propagation = Propagation.MANDATORY)
     public Menu loadByName(String name) {
         Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT m FROM Menu m WHERE m.menuName like :name");
+                ("SELECT m FROM Menu m WHERE m.menuName like :name AND m.status = :status");
         query.setParameter("name", name);
+        query.setParameter("status", Status.ACTUAL);
         return (Menu)query.getSingleResult();
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Menu> loadAll() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT m FROM Menu m").list();
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT m FROM Menu m WHERE m.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
     }
 }

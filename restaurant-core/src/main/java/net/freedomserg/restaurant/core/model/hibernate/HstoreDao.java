@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.dao.StoreDao;
+import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Store;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -32,7 +33,8 @@ public class HstoreDao implements StoreDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Store store) {
-        sessionFactory.getCurrentSession().delete(store);
+        store.setStatus(Status.DELETED);
+        sessionFactory.getCurrentSession().update(store);
     }
 
     @Override
@@ -46,14 +48,18 @@ public class HstoreDao implements StoreDao {
     public Store loadByName(String name) {
         int ingredientId = ingredientDao.loadByName(name).getIngredientId();
         Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT s FROM Store s WHERE s.ingredientId = :id");
+                ("SELECT s FROM Store s WHERE s.ingredientId = :id AND s.status = :status");
         query.setParameter("id", ingredientId);
+        query.setParameter("status", Status.ACTUAL);
         return (Store)query.getSingleResult();
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Store> loadAll() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT s FROM Store s").list();
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT s FROM Store s WHERE s.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
     }
 }

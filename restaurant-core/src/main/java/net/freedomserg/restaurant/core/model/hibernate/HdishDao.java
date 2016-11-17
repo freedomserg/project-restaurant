@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.DishDao;
 import net.freedomserg.restaurant.core.model.entity.Dish;
+import net.freedomserg.restaurant.core.model.entity.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +28,8 @@ public class HdishDao implements DishDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void remove(Dish dish) {
-        sessionFactory.getCurrentSession().delete(dish);
+        dish.setStatus(Status.DELETED);
+        sessionFactory.getCurrentSession().update(dish);
     }
 
     @Override
@@ -39,15 +41,19 @@ public class HdishDao implements DishDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Dish loadByName(String name) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("SELECT d FROM Dish d WHERE d.dishName like :name");
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT d FROM Dish d WHERE d.dishName like :name AND d.status = :status");
         query.setParameter("name", name);
+        query.setParameter("status", Status.ACTUAL);
         return (Dish)query.getSingleResult();
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Dish> loadAll() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT d FROM Dish d").list();
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT d FROM Dish d WHERE d.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
     }
 }
