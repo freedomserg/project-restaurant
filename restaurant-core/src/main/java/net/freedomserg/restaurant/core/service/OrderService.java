@@ -16,8 +16,8 @@ public class OrderService {
     }
 
     @Transactional
-    public void add(Order order) {
-        orderDao.save(order);
+    public Integer add(Order order) {
+        return orderDao.save(order);
     }
 
     @Transactional

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderDao {
 
-    void save(Order order);
+    Integer save(Order order);
 
     void remove(Order order);
 

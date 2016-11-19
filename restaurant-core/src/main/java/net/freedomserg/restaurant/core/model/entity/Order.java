@@ -2,6 +2,8 @@ package net.freedomserg.restaurant.core.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
@@ -31,13 +33,9 @@ public class Order {
     @Column(name = "table_number")
     private int tableNumber;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "dish_to_order",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "dish_id")
-    )
-    private List<Dish> dishes;
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    private List<OrderUnit> units;
 
     @Column(name = "order_date")
     private Date orderDate;
@@ -70,12 +68,12 @@ public class Order {
         this.tableNumber = tableNumber;
     }
 
-    public List<Dish> getDishes() {
-        return dishes;
+    public List<OrderUnit> getUnits() {
+        return units;
     }
 
-    public void setDishes(List<Dish> dishes) {
-        this.dishes = dishes;
+    public void setUnits(List<OrderUnit> units) {
+        this.units = units;
     }
 
     public Date getOrderDate() {
@@ -102,7 +100,7 @@ public class Order {
         if (orderId != order.orderId) return false;
         if (tableNumber != order.tableNumber) return false;
         if (waiter != null ? !waiter.equals(order.waiter) : order.waiter != null) return false;
-        if (dishes != null ? !dishes.equals(order.dishes) : order.dishes != null) return false;
+        if (units != null ? !units.equals(order.units) : order.units != null) return false;
         if (orderDate != null ? !orderDate.equals(order.orderDate) : order.orderDate != null) return false;
         return status == order.status;
 
@@ -113,7 +111,7 @@ public class Order {
         int result = orderId;
         result = 31 * result + (waiter != null ? waiter.hashCode() : 0);
         result = 31 * result + tableNumber;
-        result = 31 * result + (dishes != null ? dishes.hashCode() : 0);
+        result = 31 * result + (units != null ? units.hashCode() : 0);
         result = 31 * result + (orderDate != null ? orderDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
@@ -127,7 +125,7 @@ public class Order {
         builder.append(", tableNumber=").append(tableNumber);
         builder.append(", orderDate=").append(new SimpleDateFormat("dd/MM/yyyy").format(orderDate));
         builder.append(", dishes:").append("\n");
-        dishes.forEach(dish -> builder.append(dish).append("\n"));
+        units.forEach(dish -> builder.append(dish).append("\n"));
         builder.append(", status=").append(status);
         builder.append("}");
         return builder.toString();

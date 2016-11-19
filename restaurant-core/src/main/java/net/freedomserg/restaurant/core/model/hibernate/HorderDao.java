@@ -26,8 +26,8 @@ public class HorderDao implements OrderDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Order order) {
-        sessionFactory.getCurrentSession().save(order);
+    public Integer save(Order order) {
+        return (Integer) sessionFactory.getCurrentSession().save(order);
     }
 
     @Override
