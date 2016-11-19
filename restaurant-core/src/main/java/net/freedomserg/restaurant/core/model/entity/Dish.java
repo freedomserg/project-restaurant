@@ -29,12 +29,6 @@ public class Dish {
     @JoinColumn(name = "category")
     private Category category;
 
-    /*@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "dish_unit_to_dish",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "unit_id")
-    )*/
     @OneToMany(mappedBy = "dish", fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private List<DishUnit> units;
