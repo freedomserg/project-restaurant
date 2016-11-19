@@ -12,6 +12,7 @@
         <property name="dishService" ref="dishService"/>
         <property name="storeService" ref="storeService"/>
         <property name="orderService" ref="orderService"/>
+        <property name="dishUnitService" ref="dishUnitService"/>
     </bean>
 
     <!--hEmployeeDao-->
@@ -50,6 +51,11 @@
         <property name="ingredientDao" ref="hIngredientDao"/>
     </bean>
 
+    <!--hDishUnitDao-->
+    <bean id="hDishUnitDao" class="net.freedomserg.restaurant.core.model.hibernate.HdishUnitDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <!--employeeService-->
     <bean id="employeeService" class="net.freedomserg.restaurant.core.service.EmployeeService">
         <property name="employeeDao" ref="hEmployeeDao"/>
@@ -83,6 +89,11 @@
     <!--orderService-->
     <bean id="orderService" class="net.freedomserg.restaurant.core.service.OrderService">
         <property name="orderDao" ref="hOrderDao"/>
+    </bean>
+
+    <!--dishUnitService-->
+    <bean id="dishUnitService" class="net.freedomserg.restaurant.core.service.DishUnitService">
+        <property name="dishUnitDao" ref="hDishUnitDao"/>
     </bean>
 
 </beans>

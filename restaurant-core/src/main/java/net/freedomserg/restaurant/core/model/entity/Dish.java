@@ -24,11 +24,11 @@ public class Dish {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "ingredient_to_dish",
+            name = "dish_unit_to_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+            inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
-    private List<Ingredient> ingredients;
+    private List<DishUnit> units;
 
     @Column(name = "price")
     private double price;
@@ -80,12 +80,12 @@ public class Dish {
         this.weight = weight;
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public List<DishUnit> getUnits() {
+        return units;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setUnits(List<DishUnit> units) {
+        this.units = units;
     }
 
     public Status getStatus() {
@@ -105,7 +105,7 @@ public class Dish {
         if (weight != dish.weight) return false;
         if (dishName != null ? !dishName.equals(dish.dishName) : dish.dishName != null) return false;
         if (category != null ? !category.equals(dish.category) : dish.category != null) return false;
-        return ingredients != null ? ingredients.equals(dish.ingredients) : dish.ingredients == null;
+        return units != null ? units.equals(dish.units) : dish.units == null;
 
     }
 
@@ -115,7 +115,7 @@ public class Dish {
         long temp;
         result = dishName != null ? dishName.hashCode() : 0;
         result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
+        result = 31 * result + (units != null ? units.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + weight;
@@ -129,8 +129,8 @@ public class Dish {
         builder.append("dishId=").append(dishId);
         builder.append(", dishName=").append(dishName);
         builder.append(", category=").append(category);
-        builder.append(", ingredients:").append("\n");
-        ingredients.forEach(ingredient -> builder.append(ingredient).append("\n"));
+        builder.append(", units:").append("\n");
+        units.forEach(ingredient -> builder.append(ingredient).append("\n"));
         builder.append(", price=").append(price);
         builder.append(", weight=").append(weight);
         builder.append(", status=").append(status);
