@@ -1,7 +1,9 @@
 package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.DishDao;
+import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
 import net.freedomserg.restaurant.core.model.entity.Dish;
+import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,9 +16,14 @@ import java.util.List;
 public class HdishDao implements DishDao {
 
     private SessionFactory sessionFactory;
+    private DishUnitDao dishUnitDao;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public void setDishUnitDao(DishUnitDao dishUnitDao) {
+        this.dishUnitDao = dishUnitDao;
     }
 
     @Override
@@ -30,6 +37,10 @@ public class HdishDao implements DishDao {
     public void remove(Dish dish) {
         dish.setStatus(Status.DELETED);
         sessionFactory.getCurrentSession().update(dish);
+        List<DishUnit> units = dish.getUnits();
+        for (DishUnit unit : units) {
+            dishUnitDao.remove(unit);
+        }
     }
 
     @Override
