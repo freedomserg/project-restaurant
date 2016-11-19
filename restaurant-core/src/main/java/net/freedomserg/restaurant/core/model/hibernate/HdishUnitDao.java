@@ -1,6 +1,7 @@
 package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
+import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
@@ -22,16 +23,7 @@ public class HdishUnitDao implements DishUnitDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void save(DishUnit dishUnit) {
-        Ingredient ingredient = dishUnit.getIngredient();
-        int quantity = dishUnit.getQuantity();
-        Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT du FROM DishUnit du WHERE du.ingredient.id = :ingredient AND du.quantity = :quantity");
-        query.setParameter("ingredient", ingredient.getIngredientId());
-        query.setParameter("quantity", quantity);
-        List<DishUnit> dishUnits = query.getResultList();
-        if (dishUnits.isEmpty()) {
-            sessionFactory.getCurrentSession().save(dishUnit);
-        }
+        sessionFactory.getCurrentSession().save(dishUnit);
     }
 
     @Override
@@ -49,24 +41,14 @@ public class HdishUnitDao implements DishUnitDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public DishUnit loadById(int id) {
-        Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT du FROM DishUnit du WHERE du.id = :id AND du.status = :status");
-        query.setParameter("id", id);
-        query.setParameter("status", Status.ACTUAL);
-        return (DishUnit) query.getSingleResult();
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.MANDATORY)
-    public DishUnit load(Ingredient ingredient, int quantity) {
+    public DishUnit load(Dish dish, Ingredient ingredient) {
         Query query = sessionFactory.getCurrentSession().createQuery
                 ("SELECT du FROM DishUnit du " +
-                        "WHERE du.ingredient.id = :ingredient AND du.quantity = :quantity AND du.status = :status");
+                        "WHERE du.dish.id = :dish AND du.ingredient.id = :ingredient AND du.status = :status");
+        query.setParameter("dish", dish.getDishId());
         query.setParameter("ingredient", ingredient.getIngredientId());
-        query.setParameter("quantity", quantity);
         query.setParameter("status", Status.ACTUAL);
-        return (DishUnit)query.getResultList().get(0);
+        return (DishUnit) query.getSingleResult();
     }
 
     @Override

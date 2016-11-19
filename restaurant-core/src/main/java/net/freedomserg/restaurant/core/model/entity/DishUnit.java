@@ -1,11 +1,16 @@
 package net.freedomserg.restaurant.core.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "dish_unit")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class DishUnit {
 
     @Id
@@ -13,6 +18,10 @@ public class DishUnit {
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "id")
     private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "dish_id")
+    private Dish dish;
 
     @ManyToOne
     @JoinColumn(name = "ingredient_id")
@@ -57,20 +66,28 @@ public class DishUnit {
         this.status = status;
     }
 
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DishUnit dishUnit = (DishUnit) o;
-        if (id != dishUnit.id) return false;
         if (quantity != dishUnit.quantity) return false;
+        if (dish != null ? !dish.equals(dishUnit.dish) : dishUnit.dish != null) return false;
         return ingredient != null ? ingredient.equals(dishUnit.ingredient) : dishUnit.ingredient == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = dish != null ? dish.hashCode() : 0;
         result = 31 * result + (ingredient != null ? ingredient.hashCode() : 0);
         result = 31 * result + quantity;
         return result;

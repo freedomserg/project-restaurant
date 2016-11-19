@@ -1,5 +1,6 @@
 package net.freedomserg.restaurant.core.model.dao;
 
+import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 
@@ -13,9 +14,7 @@ public interface DishUnitDao {
 
     void update(DishUnit dishUnit);
 
-    DishUnit loadById(int id);
-
-    DishUnit load(Ingredient ingredient, int quantity);
+    DishUnit load(Dish dish, Ingredient ingredient);
 
     List<DishUnit> loadAll();
 }

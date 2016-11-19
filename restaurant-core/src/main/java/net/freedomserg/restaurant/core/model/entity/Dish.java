@@ -1,5 +1,9 @@
 package net.freedomserg.restaurant.core.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -7,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "dish")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "dishId")
 public class Dish {
 
     @Id
@@ -22,12 +29,14 @@ public class Dish {
     @JoinColumn(name = "category")
     private Category category;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "dish_unit_to_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "unit_id")
-    )
+    )*/
+    @OneToMany(mappedBy = "dish", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<DishUnit> units;
 
     @Column(name = "price")

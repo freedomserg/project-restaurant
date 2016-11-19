@@ -1,6 +1,7 @@
 package net.freedomserg.restaurant.core.service;
 
 import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
+import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,13 +32,8 @@ public class DishUnitService {
     }
 
     @Transactional
-    public DishUnit getById(int id) {
-        return dishUnitDao.loadById(id);
-    }
-
-    @Transactional
-    public DishUnit get(Ingredient ingredient, int quantity) {
-        return dishUnitDao.load(ingredient, quantity);
+    public DishUnit get(Dish dish, Ingredient ingredient) {
+        return dishUnitDao.load(dish, ingredient);
     }
 
     @Transactional
