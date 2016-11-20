@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DishDao {
 
-    void save(Dish dish);
+    Integer save(Dish dish);
 
     void remove(Dish dish);
 

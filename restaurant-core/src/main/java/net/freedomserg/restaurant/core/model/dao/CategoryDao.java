@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CategoryDao {
 
-    void save(Category category);
+    Integer save(Category category);
 
     void remove(Category category);
 

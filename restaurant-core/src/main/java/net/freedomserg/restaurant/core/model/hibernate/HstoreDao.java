@@ -26,8 +26,8 @@ public class HstoreDao implements StoreDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Store store) {
-        sessionFactory.getCurrentSession().save(store);
+    public Integer save(Store store) {
+        return (Integer) sessionFactory.getCurrentSession().save(store);
     }
 
     @Override

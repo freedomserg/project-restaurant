@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MenuDao {
 
-    void save(Menu menu);
+    Integer save(Menu menu);
 
     void remove(Menu menu);
 

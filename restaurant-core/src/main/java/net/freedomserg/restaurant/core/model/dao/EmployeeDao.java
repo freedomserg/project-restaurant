@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EmployeeDao {
 
-    void save(Employee employee);
+    Integer save(Employee employee);
 
     void remove(Employee employee);
 

@@ -22,8 +22,8 @@ public class HingredientDao implements IngredientDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Ingredient ingredient) {
-        sessionFactory.getCurrentSession().save(ingredient);
+    public Integer save(Ingredient ingredient) {
+        return (Integer) sessionFactory.getCurrentSession().save(ingredient);
     }
 
     @Override

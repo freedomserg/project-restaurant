@@ -15,8 +15,8 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void add(Employee employee) {
-        employeeDao.save(employee);
+    public Integer add(Employee employee) {
+        return employeeDao.save(employee);
     }
 
     @Transactional

@@ -15,8 +15,8 @@ public class StoreService {
     }
 
     @Transactional
-    public void add(Store store) {
-        storeDao.save(store);
+    public Integer add(Store store) {
+        return storeDao.save(store);
     }
 
     @Transactional

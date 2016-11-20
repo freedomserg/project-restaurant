@@ -15,8 +15,8 @@ public class DishService {
     }
 
     @Transactional
-    public void add(Dish dish) {
-        dishDao.save(dish);
+    public Integer add(Dish dish) {
+        return dishDao.save(dish);
     }
 
     @Transactional

@@ -20,8 +20,8 @@ public class HemployeeDao implements EmployeeDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Employee employee) {
-        sessionFactory.getCurrentSession().save(employee);
+    public Integer save(Employee employee) {
+        return (Integer) sessionFactory.getCurrentSession().save(employee);
     }
 
     @Override

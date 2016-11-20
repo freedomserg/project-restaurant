@@ -15,8 +15,8 @@ public class CategoryService {
     }
 
     @Transactional
-    public void add(Category category) {
-        categoryDao.save(category);
+    public Integer add(Category category) {
+        return categoryDao.save(category);
     }
 
     @Transactional

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderUnitDao {
 
-    void save(OrderUnit orderUnit);
+    Integer save(OrderUnit orderUnit);
 
     void remove(OrderUnit orderUnit);
 

@@ -21,8 +21,8 @@ public class HcategoryDao implements CategoryDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Category category) {
-        sessionFactory.getCurrentSession().save(category);
+    public Integer save(Category category) {
+        return (Integer) sessionFactory.getCurrentSession().save(category);
     }
 
     @Override

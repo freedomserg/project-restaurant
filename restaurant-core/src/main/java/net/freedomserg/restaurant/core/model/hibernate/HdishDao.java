@@ -5,7 +5,6 @@ import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
 import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Status;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +27,8 @@ public class HdishDao implements DishDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Dish dish) {
-        sessionFactory.getCurrentSession().save(dish);
+    public Integer save(Dish dish) {
+        return (Integer) sessionFactory.getCurrentSession().save(dish);
     }
 
     @Override

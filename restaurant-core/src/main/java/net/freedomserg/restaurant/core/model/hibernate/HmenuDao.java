@@ -20,8 +20,8 @@ public class HmenuDao implements MenuDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(Menu menu) {
-        sessionFactory.getCurrentSession().save(menu);
+    public Integer save(Menu menu) {
+        return (Integer) sessionFactory.getCurrentSession().save(menu);
     }
 
     @Override

@@ -15,8 +15,8 @@ public class IngredientService {
     }
 
     @Transactional
-    public void add(Ingredient ingredient) {
-        ingredientDao.save(ingredient);
+    public Integer add(Ingredient ingredient) {
+        return ingredientDao.save(ingredient);
     }
 
     @Transactional

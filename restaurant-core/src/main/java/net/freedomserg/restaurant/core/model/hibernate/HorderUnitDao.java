@@ -22,8 +22,8 @@ public class HorderUnitDao implements OrderUnitDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(OrderUnit orderUnit) {
-        sessionFactory.getCurrentSession().save(orderUnit);
+    public Integer save(OrderUnit orderUnit) {
+        return (Integer) sessionFactory.getCurrentSession().save(orderUnit);
     }
 
     @Override

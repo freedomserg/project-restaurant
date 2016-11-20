@@ -17,8 +17,8 @@ public class DishUnitService {
     }
 
     @Transactional
-    public void add(DishUnit dishUnit) {
-        dishUnitDao.save(dishUnit);
+    public Integer add(DishUnit dishUnit) {
+        return dishUnitDao.save(dishUnit);
     }
 
     @Transactional

@@ -22,8 +22,8 @@ public class HdishUnitDao implements DishUnitDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void save(DishUnit dishUnit) {
-        sessionFactory.getCurrentSession().save(dishUnit);
+    public Integer save(DishUnit dishUnit) {
+        return (Integer) sessionFactory.getCurrentSession().save(dishUnit);
     }
 
     @Override

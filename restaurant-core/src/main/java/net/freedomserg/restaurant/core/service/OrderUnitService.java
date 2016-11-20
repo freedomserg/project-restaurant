@@ -17,8 +17,8 @@ public class OrderUnitService {
     }
 
     @Transactional
-    public void add(OrderUnit orderUnit) {
-        orderUnitDao.save(orderUnit);
+    public Integer add(OrderUnit orderUnit) {
+        return orderUnitDao.save(orderUnit);
     }
 
     @Transactional

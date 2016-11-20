@@ -15,8 +15,8 @@ public class MenuService {
     }
 
     @Transactional
-    public void add(Menu menu) {
-        menuDao.save(menu);
+    public Integer add(Menu menu) {
+        return menuDao.save(menu);
     }
 
     @Transactional

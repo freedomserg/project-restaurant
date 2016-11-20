@@ -1,13 +1,12 @@
 package net.freedomserg.restaurant.core.model.dao;
 
-import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Store;
 
 import java.util.List;
 
 public interface StoreDao {
 
-    void save(Store store);
+    Integer save(Store store);
 
     void remove(Store store);
 

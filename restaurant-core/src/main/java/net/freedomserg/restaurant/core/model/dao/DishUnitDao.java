@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DishUnitDao {
 
-    void save(DishUnit dishUnit);
+    Integer save(DishUnit dishUnit);
 
     void remove(DishUnit dishUnit);
 
