@@ -3,7 +3,6 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.CategoryDao;
 import net.freedomserg.restaurant.core.model.entity.Category;
 import net.freedomserg.restaurant.core.model.entity.Status;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +50,11 @@ public class HcategoryDao implements CategoryDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Category loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Category.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT c FROM Category c WHERE c.categoryId = :id AND c.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (Category) query.getSingleResult();
     }
 
     @Override

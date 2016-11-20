@@ -52,7 +52,11 @@ public class HingredientDao implements IngredientDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Ingredient loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Ingredient.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT i FROM Ingredient i WHERE i.ingredientId = :id AND i.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (Ingredient) query.getSingleResult();
     }
 
     @Override

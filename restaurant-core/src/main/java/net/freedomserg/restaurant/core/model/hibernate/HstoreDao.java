@@ -57,7 +57,11 @@ public class HstoreDao implements StoreDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Store loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Store.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT s FROM Store s WHERE s.ingredientId = :id AND s.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (Store) query.getSingleResult();
     }
 
     @Override

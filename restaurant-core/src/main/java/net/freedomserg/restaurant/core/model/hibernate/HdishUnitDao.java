@@ -54,7 +54,11 @@ public class HdishUnitDao implements DishUnitDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public DishUnit loadById(int id) {
-        return sessionFactory.getCurrentSession().load(DishUnit.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT du FROM DishUnit du WHERE du.id = :id AND du.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (DishUnit) query.getSingleResult();
     }
 
     @Override

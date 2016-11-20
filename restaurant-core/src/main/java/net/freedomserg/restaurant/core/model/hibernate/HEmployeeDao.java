@@ -51,7 +51,11 @@ public class HemployeeDao implements EmployeeDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Employee loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Employee.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT e FROM Employee e WHERE e.id = :id AND e.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (Employee) query.getSingleResult();
     }
 
     @Override

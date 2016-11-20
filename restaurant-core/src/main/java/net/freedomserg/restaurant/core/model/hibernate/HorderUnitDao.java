@@ -54,7 +54,11 @@ public class HorderUnitDao implements OrderUnitDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public OrderUnit loadById(int id) {
-        return sessionFactory.getCurrentSession().load(OrderUnit.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT ou FROM OrderUnit ou WHERE ou.id = :id AND ou.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (OrderUnit) query.getSingleResult();
     }
 
     @Override

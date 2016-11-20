@@ -61,7 +61,11 @@ public class HdishDao implements DishDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Dish loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Dish.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT d FROM Dish d WHERE d.dishId = :id AND d.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (Dish) query.getSingleResult();
     }
 
     @Override

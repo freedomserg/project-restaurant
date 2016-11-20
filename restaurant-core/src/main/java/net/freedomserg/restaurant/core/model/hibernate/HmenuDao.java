@@ -50,7 +50,11 @@ public class HmenuDao implements MenuDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Menu loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Menu.class, id);
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT m FROM Menu m WHERE m.menuId = :id AND m.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("status", Status.ACTUAL);
+        return (Menu) query.getSingleResult();
     }
 
     @Override
