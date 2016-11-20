@@ -1,7 +1,5 @@
 package net.freedomserg.restaurant.core.model.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity
