@@ -22,14 +22,14 @@ import static org.junit.Assert.*;
         }
 )
 @RunWith(SpringJUnit4ClassRunner.class)
-public class HcategoryDaoTest {
+public class TestHcategoryDao {
 
     @Autowired
     private CategoryDao categoryDao;
 
-    @Test
     @Transactional
     @Rollback
+    @Test
     public void testAddCategory() {
         Category category = new Category();
         category.setCategoryName("Cakes");
