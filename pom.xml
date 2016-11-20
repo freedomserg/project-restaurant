@@ -30,6 +30,7 @@
         <hibernate.version>5.2.2.Final</hibernate.version>
         <c3po.version>0.9.5.2</c3po.version>
         <postgre.version>9.4-1201-jdbc41</postgre.version>
+        <hsqldb.version>2.3.1</hsqldb.version>
         <slf4j.version>1.7.21</slf4j.version>
         <logback.version>1.1.7</logback.version>
         <junit.version>4.12</junit.version>
@@ -97,6 +98,14 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!--Spring-Test-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--Spring-mvc-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -130,6 +139,14 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgre.version}</version>
+        </dependency>
+
+        <!--HyperSQL-->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Slf4j API -->
