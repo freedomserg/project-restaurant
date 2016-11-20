@@ -14,5 +14,7 @@ public interface DishDao {
 
     Dish loadByName(String name);
 
+    Dish loadById(int id);
+
     List<Dish> loadAll();
 }

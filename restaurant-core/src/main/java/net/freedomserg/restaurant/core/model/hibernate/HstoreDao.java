@@ -56,6 +56,12 @@ public class HstoreDao implements StoreDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
+    public Store loadById(int id) {
+        return sessionFactory.getCurrentSession().load(Store.class, id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public List<Store> loadAll() {
         Query query = sessionFactory.getCurrentSession().createQuery
                 ("SELECT s FROM Store s WHERE s.status = :status");

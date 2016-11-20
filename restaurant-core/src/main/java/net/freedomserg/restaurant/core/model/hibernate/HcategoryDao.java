@@ -50,6 +50,12 @@ public class HcategoryDao implements CategoryDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
+    public Category loadById(int id) {
+        return sessionFactory.getCurrentSession().load(Category.class, id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public List<Category> loadAll() {
         Query query = sessionFactory.getCurrentSession().createQuery
                 ("SELECT c FROM Category c WHERE c.status = :status");

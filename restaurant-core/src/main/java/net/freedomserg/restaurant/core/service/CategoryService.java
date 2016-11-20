@@ -35,6 +35,11 @@ public class CategoryService {
     }
 
     @Transactional
+    public Category getById(int id) {
+        return categoryDao.loadById(id);
+    }
+
+    @Transactional
     public List<Category> getAll() {
         return categoryDao.loadAll();
     }

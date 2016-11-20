@@ -35,6 +35,11 @@ public class IngredientService {
     }
 
     @Transactional
+    public Ingredient getById(int id) {
+        return ingredientDao.loadById(id);
+    }
+
+    @Transactional
     public List<Ingredient> getAll() {
         return ingredientDao.loadAll();
     }

@@ -35,6 +35,11 @@ public class StoreService {
     }
 
     @Transactional
+    public Store getById(int id) {
+        return storeDao.loadById(id);
+    }
+
+    @Transactional
     public List<Store> getAll() {
         return storeDao.loadAll();
     }

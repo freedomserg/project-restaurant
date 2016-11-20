@@ -16,5 +16,7 @@ public interface OrderUnitDao {
 
     OrderUnit load(Order order, Dish dish);
 
+    OrderUnit loadById(int id);
+
     List<OrderUnit> loadAll();
 }

@@ -35,6 +35,11 @@ public class EmployeeService {
     }
 
     @Transactional
+    public Employee getById(int id) {
+        return employeeDao.loadById(id);
+    }
+
+    @Transactional
     public List<Employee> getAll() {
         return employeeDao.loadAll();
     }

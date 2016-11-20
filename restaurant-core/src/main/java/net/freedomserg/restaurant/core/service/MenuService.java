@@ -35,6 +35,11 @@ public class MenuService {
     }
 
     @Transactional
+    public Menu getById(int id) {
+        return menuDao.loadById(id);
+    }
+
+    @Transactional
     public List<Menu> getAll() {
         return menuDao.loadAll();
     }

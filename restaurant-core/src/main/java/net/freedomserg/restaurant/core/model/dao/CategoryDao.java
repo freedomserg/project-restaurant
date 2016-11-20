@@ -14,5 +14,7 @@ public interface CategoryDao {
 
     Category loadByName(String name);
 
+    Category loadById(int id);
+
     List<Category> loadAll();
 }

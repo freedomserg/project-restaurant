@@ -14,5 +14,7 @@ public interface MenuDao {
 
     Menu loadByName(String name);
 
+    Menu loadById(int id);
+
     List<Menu> loadAll();
 }

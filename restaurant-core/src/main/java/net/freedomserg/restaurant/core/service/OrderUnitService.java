@@ -37,6 +37,11 @@ public class OrderUnitService {
     }
 
     @Transactional
+    public OrderUnit getById(int id) {
+        return orderUnitDao.loadById(id);
+    }
+
+    @Transactional
     public List<OrderUnit> getAll() {
         return orderUnitDao.loadAll();
     }

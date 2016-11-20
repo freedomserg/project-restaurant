@@ -14,5 +14,7 @@ public interface EmployeeDao {
 
     void update(Employee employee);
 
+    Employee loadById(int id);
+
     List<Employee> loadAll();
 }

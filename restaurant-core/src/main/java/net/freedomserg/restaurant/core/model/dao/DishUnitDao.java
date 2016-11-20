@@ -16,5 +16,7 @@ public interface DishUnitDao {
 
     DishUnit load(Dish dish, Ingredient ingredient);
 
+    DishUnit loadById(int id);
+
     List<DishUnit> loadAll();
 }

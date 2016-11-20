@@ -35,6 +35,11 @@ public class DishService {
     }
 
     @Transactional
+    public Dish getById(int id) {
+        return dishDao.loadById(id);
+    }
+
+    @Transactional
     public List<Dish> getAll() {
         return dishDao.loadAll();
     }

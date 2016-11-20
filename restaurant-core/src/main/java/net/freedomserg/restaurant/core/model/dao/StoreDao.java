@@ -14,5 +14,7 @@ public interface StoreDao {
 
     Store loadByName(String name);
 
+    Store loadById(int id);
+
     List<Store> loadAll();
 }

@@ -51,6 +51,12 @@ public class HingredientDao implements IngredientDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
+    public Ingredient loadById(int id) {
+        return sessionFactory.getCurrentSession().load(Ingredient.class, id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public List<Ingredient> loadAll() {
         Query query = sessionFactory.getCurrentSession().createQuery
                 ("SELECT i FROM Ingredient i WHERE i.status = :status");
