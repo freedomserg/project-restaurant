@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.entity.Waiter;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,38 @@ public class HemployeeDao implements EmployeeDao {
     public List<Employee> loadAll() {
         Query query = sessionFactory.getCurrentSession().createQuery
                 ("SELECT e FROM Employee e WHERE e.status = :status");
+        query.setParameter("status", Status.ACTUAL);
+        return query.getResultList();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Waiter loadWaiterByName(String name) {
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT e FROM Employee e WHERE e.name like :name AND type(e) = :etype AND e.status = :status");
+        query.setParameter("name", name);
+        query.setParameter("etype", Waiter.class);
+        query.setParameter("status", Status.ACTUAL);
+        return (Waiter) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Waiter loadWaiterById(int id) {
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT e FROM Employee e WHERE e.id = :id AND type(e) = :etype AND e.status = :status");
+        query.setParameter("id", id);
+        query.setParameter("etype", Waiter.class);
+        query.setParameter("status", Status.ACTUAL);
+        return (Waiter) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
+    public List<Waiter> loadAllWaiters() {
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("SELECT e FROM Employee e WHERE type(e) = :etype AND e.status = :status");
+        query.setParameter("etype", Waiter.class);
         query.setParameter("status", Status.ACTUAL);
         return query.getResultList();
     }

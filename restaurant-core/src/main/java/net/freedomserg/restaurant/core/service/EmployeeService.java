@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.service;
 
 import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
+import net.freedomserg.restaurant.core.model.entity.Waiter;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -42,5 +43,20 @@ public class EmployeeService {
     @Transactional
     public List<Employee> getAll() {
         return employeeDao.loadAll();
+    }
+
+    @Transactional
+    public Waiter getWaiterByName(String name) {
+        return employeeDao.loadWaiterByName(name);
+    }
+
+    @Transactional
+    public Waiter getWaiterById(int id) {
+        return employeeDao.loadWaiterById(id);
+    }
+
+    @Transactional
+    public List<Waiter> getAllWaiters() {
+        return employeeDao.loadAllWaiters();
     }
 }
