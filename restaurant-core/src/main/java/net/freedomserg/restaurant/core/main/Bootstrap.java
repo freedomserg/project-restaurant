@@ -1,18 +1,15 @@
 package net.freedomserg.restaurant.core.main;
 
-import com.sun.xml.internal.bind.v2.TODO;
-import net.freedomserg.restaurant.core.model.entity.Category;
-import net.freedomserg.restaurant.core.model.entity.Employee;
-import net.freedomserg.restaurant.core.model.entity.Ingredient;
-import net.freedomserg.restaurant.core.model.entity.Menu;
-import net.freedomserg.restaurant.core.service.CategoryService;
-import net.freedomserg.restaurant.core.service.EmployeeService;
-import net.freedomserg.restaurant.core.service.IngredientService;
-import net.freedomserg.restaurant.core.service.MenuService;
+import net.freedomserg.restaurant.core.model.entity.*;
+import net.freedomserg.restaurant.core.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Bootstrap {
 
@@ -20,6 +17,12 @@ public class Bootstrap {
     private CategoryService categoryService;
     private MenuService menuService;
     private IngredientService ingredientService;
+    private DishService dishService;
+    private StoreService storeService;
+    private OrderService orderService;
+    private DishUnitService dishUnitService;
+    private OrderUnitService orderUnitService;
+    private final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
     public void setEmployeeService(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -37,7 +40,25 @@ public class Bootstrap {
         this.ingredientService = ingredientService;
     }
 
-    //todo test Menu with Dish
+    public void setDishService(DishService dishService) {
+        this.dishService = dishService;
+    }
+
+    public void setStoreService(StoreService storeService) {
+        this.storeService = storeService;
+    }
+
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    public void setDishUnitService(DishUnitService dishUnitService) {
+        this.dishUnitService = dishUnitService;
+    }
+
+    public void setOrderUnitService(OrderUnitService orderUnitService) {
+        this.orderUnitService = orderUnitService;
+    }
 
     public static void main(String[] args) {
 
@@ -48,24 +69,46 @@ public class Bootstrap {
 
     }
 
-    private Ingredient create() {
-        Ingredient item = new Ingredient();
-        item.setIngredientName("garlic");
-        return item;
+    private void createMeatUnit(Dish dish) {
+        Ingredient meat = ingredientService.getByName("meat");
+        DishUnit meatUnit = new DishUnit();
+        meatUnit.setDish(dish);
+        meatUnit.setIngredient(meat);
+        int quantity = 400;
+        meatUnit.setQuantity(quantity);
+        dishUnitService.add(meatUnit);
     }
 
-    private Ingredient update() {
-        Ingredient item = new Ingredient();
-        item.setIngredientId(26);
-        item.setIngredientName("best garlic");
-        return item;
+    private void createSpiceUnit(Dish dish) {
+        Ingredient spice = ingredientService.getByName("spice");
+        DishUnit spiceUnit = new DishUnit();
+        spiceUnit.setDish(dish);
+        spiceUnit.setIngredient(spice);
+        int quantity = 50;
+        spiceUnit.setQuantity(quantity);
+        dishUnitService.add(spiceUnit);
     }
+
+    private void createOrderUnit(int id) {
+        OrderUnit orderUnit = new OrderUnit();
+        Dish dish = dishService.getByName("Caesar");
+        orderUnit.setDish(dish);
+        orderUnit.setQuantity(2);
+        Order order = orderService.getById(id);
+        orderUnit.setOrder(order);
+        orderUnitService.add(orderUnit);
+    }
+
+
 
     private void start() {
-        Ingredient ingredient = new Ingredient();
-        ingredient.setIngredientId(26);
-        ingredient.setIngredientName("best garlic");
-        ingredientService.delete(ingredient);
-        ingredientService.getAll().forEach(System.out::println);
+        Waiter waiter1 = employeeService.getWaiterByName("Jacob");
+        Waiter waiter2 = employeeService.getWaiterById(1);
+
+        System.out.println(waiter1);
+        System.out.println(waiter2);
+
+        employeeService.getAllWaiters().forEach(System.out::println);
+
     }
 }
