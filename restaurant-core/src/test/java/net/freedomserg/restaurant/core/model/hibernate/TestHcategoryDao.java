@@ -27,6 +27,9 @@ public class TestHcategoryDao {
     @Autowired
     private CategoryDao categoryDao;
 
+    public static final String TEST_CATEGORY_NAME_1 = "Cakes";
+    public static final String TEST_CATEGORY_NAME_2 = "Fish";
+
 
     @Test
     @Transactional
@@ -41,7 +44,7 @@ public class TestHcategoryDao {
     @Transactional
     @Rollback
     public void testSave() {
-        Category category = createCategory("Cakes");
+        Category category = createCategory(TEST_CATEGORY_NAME_1);
         categoryDao.save(category);
         List<Category> categories = categoryDao.loadAll();
 
@@ -54,8 +57,8 @@ public class TestHcategoryDao {
     @Transactional
     @Rollback
     public void testLoadAllTwoEntities() {
-        categoryDao.save(createCategory("Cakes"));
-        categoryDao.save(createCategory("Fish"));
+        categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
+        categoryDao.save(createCategory(TEST_CATEGORY_NAME_2));
         List<Category> categories = categoryDao.loadAll();
 
         assertEquals(2, categories.size());
@@ -65,11 +68,11 @@ public class TestHcategoryDao {
     @Transactional
     @Rollback
     public void testLoadByName() {
-        categoryDao.save(createCategory("Cakes"));
-        Category extracted = categoryDao.loadByName("Cakes");
+        categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
+        Category extracted = categoryDao.loadByName(TEST_CATEGORY_NAME_1);
 
         assertNotNull(extracted);
-        assertEquals("Cakes", extracted.getCategoryName());
+        assertEquals(TEST_CATEGORY_NAME_1, extracted.getCategoryName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
 
@@ -77,11 +80,11 @@ public class TestHcategoryDao {
     @Transactional
     @Rollback
     public void testLoadById() {
-        int id = categoryDao.save(createCategory("Cakes"));
+        int id = categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
         Category extracted = categoryDao.loadById(id);
 
         assertNotNull(extracted);
-        assertEquals("Cakes", extracted.getCategoryName());
+        assertEquals(TEST_CATEGORY_NAME_1, extracted.getCategoryName());
         assertEquals(id, extracted.getCategoryId());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
@@ -92,18 +95,19 @@ public class TestHcategoryDao {
     public void testUpdate() {
         int id = categoryDao.save(createCategory("Cakes"));
         Category extracted = categoryDao.loadById(id);
-        extracted.setCategoryName("Taste cakes");
+        String updatedName = "Taste cakes";
+        extracted.setCategoryName(updatedName);
         categoryDao.update(extracted);
         Category reextracted = categoryDao.loadById(id);
 
-        assertEquals("Taste cakes", reextracted.getCategoryName());
+        assertEquals(updatedName, reextracted.getCategoryName());
     }
 
     @Test
     @Transactional
     @Rollback
     public void testRemove() {
-        int id = categoryDao.save(createCategory("Cakes"));
+        int id = categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
         Category extracted = categoryDao.loadById(id);
         categoryDao.remove(extracted);
         List<Category> categories = categoryDao.loadAll();
