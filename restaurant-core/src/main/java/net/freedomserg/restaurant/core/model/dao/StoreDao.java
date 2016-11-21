@@ -1,5 +1,6 @@
 package net.freedomserg.restaurant.core.model.dao;
 
+import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Store;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface StoreDao {
 
     void update(Store store);
 
-    Store loadByName(String name);
+    Store loadByIngredient(Ingredient ingredient);
 
     Store loadById(int id);
 

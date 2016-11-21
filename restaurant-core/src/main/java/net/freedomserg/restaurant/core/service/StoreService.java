@@ -1,6 +1,7 @@
 package net.freedomserg.restaurant.core.service;
 
 import net.freedomserg.restaurant.core.model.dao.StoreDao;
+import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Store;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +31,8 @@ public class StoreService {
     }
 
     @Transactional
-    public Store getByName(String name) {
-        return storeDao.loadByName(name);
+    public Store getByIngredient(Ingredient ingredient) {
+        return storeDao.loadByIngredient(ingredient);
     }
 
     @Transactional

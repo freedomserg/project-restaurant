@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.dao.StoreDao;
+import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Store;
 import org.hibernate.SessionFactory;
@@ -14,14 +15,9 @@ import java.util.List;
 public class HstoreDao implements StoreDao {
 
     private SessionFactory sessionFactory;
-    private IngredientDao ingredientDao;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-    }
-
-    public void setIngredientDao(IngredientDao ingredientDao) {
-        this.ingredientDao = ingredientDao;
     }
 
     @Override
@@ -45,11 +41,10 @@ public class HstoreDao implements StoreDao {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public Store loadByName(String name) {
-        int ingredientId = ingredientDao.loadByName(name).getIngredientId();
+    public Store loadByIngredient(Ingredient ingredient) {
         Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT s FROM Store s WHERE s.ingredientId = :id AND s.status = :status");
-        query.setParameter("id", ingredientId);
+                ("SELECT s FROM Store s WHERE s.ingredient.ingredientId = :id AND s.status = :status");
+        query.setParameter("id", ingredient.getIngredientId());
         query.setParameter("status", Status.ACTUAL);
         return (Store)query.getSingleResult();
     }
@@ -58,7 +53,7 @@ public class HstoreDao implements StoreDao {
     @Transactional(propagation = Propagation.MANDATORY)
     public Store loadById(int id) {
         Query query = sessionFactory.getCurrentSession().createQuery
-                ("SELECT s FROM Store s WHERE s.ingredientId = :id AND s.status = :status");
+                ("SELECT s FROM Store s WHERE s.id = :id AND s.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
         return (Store) query.getSingleResult();

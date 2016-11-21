@@ -50,7 +50,6 @@
     <!--hStoreDao-->
     <bean id="hStoreDao" class="net.freedomserg.restaurant.core.model.hibernate.HstoreDao">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="ingredientDao" ref="hIngredientDao"/>
     </bean>
 
     <!--hDishUnitDao-->

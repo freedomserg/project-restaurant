@@ -1,5 +1,7 @@
 package net.freedomserg.restaurant.core.model.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,8 +9,14 @@ import javax.persistence.*;
 public class Store {
 
     @Id
-    @Column(name = "ingredient_id")
-    private int ingredientId;
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @Column(name = "id")
+    private int id;
+
+    @OneToOne
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
     @Column(name = "quantity")
     private int quantity;
@@ -17,12 +25,20 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTUAL;
 
-    public int getIngredientId() {
-        return ingredientId;
+    public int getId() {
+        return id;
     }
 
-    public void setIngredientId(int ingredientId) {
-        this.ingredientId = ingredientId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     public int getQuantity() {
@@ -46,14 +62,14 @@ public class Store {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Store store = (Store) o;
-        if (ingredientId != store.ingredientId) return false;
-        return quantity == store.quantity;
+        if (quantity != store.quantity) return false;
+        return ingredient != null ? ingredient.equals(store.ingredient) : store.ingredient == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = ingredientId;
+        int result = ingredient != null ? ingredient.hashCode() : 0;
         result = 31 * result + quantity;
         return result;
     }
@@ -61,7 +77,8 @@ public class Store {
     @Override
     public String toString() {
         return "Store{" +
-                "ingredientId=" + ingredientId +
+                "id=" + id +
+                ", ingredient=" + ingredient +
                 ", quantity=" + quantity +
                 ", status=" + status +
                 '}';
