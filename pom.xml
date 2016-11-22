@@ -28,6 +28,7 @@
         <spring.version>4.3.2.RELEASE</spring.version>
         <jackson.version>2.8.2</jackson.version>
         <hibernate.version>5.2.2.Final</hibernate.version>
+        <javax.el.version>2.2.4</javax.el.version>
         <c3po.version>0.9.5.2</c3po.version>
         <postgre.version>9.4-1201-jdbc41</postgre.version>
         <h2.version>1.4.193</h2.version>
@@ -125,6 +126,25 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
+        </dependency>
+
+        <!--Hibernate Validator, used for constraints annotations-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <!--Expression language implementation, used for Hibernate validator-->
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>${javax.el.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${javax.el.version}</version>
         </dependency>
 
         <!--c3po - data source interface implementation-->

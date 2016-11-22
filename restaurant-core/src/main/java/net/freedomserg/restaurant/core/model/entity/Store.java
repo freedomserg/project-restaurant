@@ -3,10 +3,12 @@ package net.freedomserg.restaurant.core.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "store")
+@Table(name = "store",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"ingredient_id"})})
 public class Store implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,6 +21,7 @@ public class Store implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "ingredient_id")
+    @NotNull
     private Ingredient ingredient;
 
     @Column(name = "quantity")
@@ -26,6 +29,7 @@ public class Store implements Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getId() {

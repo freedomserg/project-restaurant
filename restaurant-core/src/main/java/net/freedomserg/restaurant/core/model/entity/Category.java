@@ -3,10 +3,12 @@ package net.freedomserg.restaurant.core.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"category_name"})})
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,10 +20,12 @@ public class Category implements Serializable {
     private int categoryId;
 
     @Column(name = "category_name")
+    @NotNull
     private String categoryName;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getCategoryId() {

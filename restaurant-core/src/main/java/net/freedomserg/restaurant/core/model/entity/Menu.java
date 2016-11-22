@@ -4,11 +4,13 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "menu")
+@Table(name = "menu",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"menu_name"})})
 public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,6 +22,7 @@ public class Menu implements Serializable {
     private int menuId;
 
     @Column(name = "menu_name")
+    @NotNull
     private String menuName;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -33,6 +36,7 @@ public class Menu implements Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getMenuId() {

@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "order_unit")
+@Table(name = "order_unit",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"order_id", "dish_id"})})
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -24,17 +26,21 @@ public class OrderUnit implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @NotNull
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "dish_id")
+    @NotNull
     private Dish dish;
 
     @Column(name = "dish_quan")
+    @NotNull
     private int quantity;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getId() {

@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class Order implements Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private OrderStatus status = OrderStatus.OPENED;
 
     public int getOrderId() {

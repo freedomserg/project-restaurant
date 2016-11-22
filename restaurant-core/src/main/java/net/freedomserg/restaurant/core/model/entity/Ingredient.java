@@ -4,10 +4,12 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "ingredient")
+@Table(name = "ingredient",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"ingredient_name"})})
 public class Ingredient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,10 +21,12 @@ public class Ingredient implements Serializable {
     private int ingredientId;
 
     @Column(name = "ingredient_name")
+    @NotNull
     private String ingredientName;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getIngredientId() {

@@ -3,12 +3,14 @@ package net.freedomserg.restaurant.core.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"name"})})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Employee implements Serializable {
 
@@ -21,6 +23,7 @@ public class Employee implements Serializable {
     private int id;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @Column(name = "birthday")
@@ -37,6 +40,7 @@ public class Employee implements Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getId() {

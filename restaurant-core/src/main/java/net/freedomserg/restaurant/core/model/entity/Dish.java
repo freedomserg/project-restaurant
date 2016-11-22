@@ -7,11 +7,13 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "dish")
+@Table(name = "dish",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"dish_name"})})
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "dishId")
@@ -26,6 +28,7 @@ public class Dish implements Serializable {
     private int dishId;
 
     @Column(name = "dish_name")
+    @NotNull
     private String dishName;
 
     @ManyToOne
@@ -44,6 +47,7 @@ public class Dish implements Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Status status = Status.ACTUAL;
 
     public int getDishId() {
