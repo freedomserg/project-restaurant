@@ -5,10 +5,12 @@ import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.Order;
 import net.freedomserg.restaurant.core.model.entity.OrderUnit;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -23,6 +25,11 @@ public class HorderUnitDao implements OrderUnitDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(OrderUnit orderUnit) {
+        OrderUnit target = load(orderUnit.getOrder(), orderUnit.getDish());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("OrderUnit with such Order and Dish already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(orderUnit);
     }
 
@@ -48,7 +55,13 @@ public class HorderUnitDao implements OrderUnitDao {
         query.setParameter("orderId", order.getOrderId());
         query.setParameter("dishId", dish.getDishId());
         query.setParameter("status", Status.ACTUAL);
-        return (OrderUnit) query.getSingleResult();
+        OrderUnit orderUnit;
+        try{
+            orderUnit = (OrderUnit) query.getSingleResult();
+        }catch (NoResultException ex) {
+            return null;
+        }
+        return orderUnit;
     }
 
     @Override

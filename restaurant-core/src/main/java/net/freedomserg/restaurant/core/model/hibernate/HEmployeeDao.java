@@ -4,10 +4,12 @@ import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Waiter;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -22,6 +24,11 @@ public class HemployeeDao implements EmployeeDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Employee employee) {
+        Employee target = loadByName(employee.getName());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Employee with such name already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(employee);
     }
 
@@ -39,7 +46,13 @@ public class HemployeeDao implements EmployeeDao {
                 ("SELECT e FROM Employee e WHERE e.name like :name AND e.status = :status");
         query.setParameter("name", name);
         query.setParameter("status", Status.ACTUAL);
-        return (Employee) query.getSingleResult();
+        Employee employee;
+        try{
+            employee = (Employee) query.getSingleResult();
+        }catch (NoResultException ex) {
+            return null;
+        }
+        return employee;
     }
 
     @Override

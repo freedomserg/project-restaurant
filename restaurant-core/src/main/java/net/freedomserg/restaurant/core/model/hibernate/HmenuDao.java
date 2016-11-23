@@ -3,10 +3,12 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.MenuDao;
 import net.freedomserg.restaurant.core.model.entity.Menu;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -21,6 +23,11 @@ public class HmenuDao implements MenuDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Menu menu) {
+        Menu target = loadByName(menu.getMenuName());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Menu with such name already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(menu);
     }
 
@@ -44,7 +51,13 @@ public class HmenuDao implements MenuDao {
                 ("SELECT m FROM Menu m WHERE m.menuName like :name AND m.status = :status");
         query.setParameter("name", name);
         query.setParameter("status", Status.ACTUAL);
-        return (Menu)query.getSingleResult();
+        Menu menu;
+        try{
+            menu = (Menu)query.getSingleResult();
+        }catch (NoResultException ex) {
+            return null;
+        }
+        return menu;
     }
 
     @Override

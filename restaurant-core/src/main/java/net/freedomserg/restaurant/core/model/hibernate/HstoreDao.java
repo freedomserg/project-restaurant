@@ -27,7 +27,7 @@ public class HstoreDao implements StoreDao {
         Store extracted = loadByIngredient(store.getIngredient());
         if (extracted != null) {
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Store entity with such ingredient already exists!");
+                    ("Store with such ingredient already exists!");
         }
         return (Integer) sessionFactory.getCurrentSession().save(store);
     }

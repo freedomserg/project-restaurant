@@ -26,7 +26,7 @@ public class HcategoryDao implements CategoryDao {
         Category target = loadByName(category.getCategoryName());
         if (target != null) {
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Category entity with such name already exists!");
+                    ("Category with such name already exists!");
         }
         return (Integer) sessionFactory.getCurrentSession().save(category);
     }
