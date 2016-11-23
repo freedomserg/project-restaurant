@@ -68,12 +68,13 @@ public class TestHstoreDao {
     @Transactional
     @Rollback
     public void testSave() {
-        storeDao.save(createStoreEntity());
+        int id = storeDao.save(createStoreEntity());
         List<Store> stores = storeDao.loadAll();
-        Store extracted = stores.get(0);
 
-        assertEquals(ingredient, extracted.getIngredient());
-        assertEquals(TEST_INGREDIENT_QUANTITY, extracted.getQuantity());
+        assertFalse(stores.isEmpty());
+        assertEquals(id, stores.get(0).getId());
+        assertEquals(ingredient, stores.get(0).getIngredient());
+        assertEquals(TEST_INGREDIENT_QUANTITY, stores.get(0).getQuantity());
         assertEquals(Status.ACTUAL, stores.get(0).getStatus());
     }
 

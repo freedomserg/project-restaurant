@@ -45,10 +45,11 @@ public class TestHingredientDao {
     @Rollback
     public void testSave() {
         Ingredient ingredient = createIngredient(TEST_INGREDIENT_NAME_1);
-        ingredientDao.save(ingredient);
+        int id = ingredientDao.save(ingredient);
         List<Ingredient> ingredients = ingredientDao.loadAll();
 
-        assertEquals(1, ingredients.size());
+        assertFalse(ingredients.isEmpty());
+        assertEquals(id, ingredients.get(0).getIngredientId());
         assertEquals(ingredient.getIngredientName(), ingredients.get(0).getIngredientName());
         assertEquals(Status.ACTUAL, ingredients.get(0).getStatus());
     }

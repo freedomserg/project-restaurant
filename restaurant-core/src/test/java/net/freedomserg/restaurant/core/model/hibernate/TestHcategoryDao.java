@@ -46,10 +46,11 @@ public class TestHcategoryDao {
     @Rollback
     public void testSave() {
         Category category = createCategory(TEST_CATEGORY_NAME_1);
-        categoryDao.save(category);
+        int id = categoryDao.save(category);
         List<Category> categories = categoryDao.loadAll();
 
-        assertEquals(1, categories.size());
+        assertFalse(categories.isEmpty());
+        assertEquals(id, categories.get(0).getCategoryId());
         assertEquals(category.getCategoryName(), categories.get(0).getCategoryName());
         assertEquals(Status.ACTUAL, categories.get(0).getStatus());
     }
