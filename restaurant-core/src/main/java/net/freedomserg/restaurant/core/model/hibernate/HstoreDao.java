@@ -1,14 +1,15 @@
 package net.freedomserg.restaurant.core.model.hibernate;
 
-import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.dao.StoreDao;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Store;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class HstoreDao implements StoreDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Store store) {
+        Store extracted = loadByIngredient(store.getIngredient());
+        if (extracted != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Store entity with such ingredient already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(store);
     }
 
@@ -46,7 +52,13 @@ public class HstoreDao implements StoreDao {
                 ("SELECT s FROM Store s WHERE s.ingredient.ingredientId = :id AND s.status = :status");
         query.setParameter("id", ingredient.getIngredientId());
         query.setParameter("status", Status.ACTUAL);
-        return (Store)query.getSingleResult();
+        Store store;
+        try{
+            store = (Store)query.getSingleResult();
+        } catch(NoResultException ex) {
+            return null;
+        }
+        return store;
     }
 
     @Override
