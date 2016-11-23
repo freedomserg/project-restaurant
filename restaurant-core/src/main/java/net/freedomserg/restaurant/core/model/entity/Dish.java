@@ -140,7 +140,7 @@ public class Dish implements Serializable {
         builder.append(", dishName=").append(dishName);
         builder.append(", category=").append(category);
         builder.append(", units:").append("\n");
-        units.forEach(ingredient -> builder.append(ingredient).append("\n"));
+        units.forEach(unit -> builder.append(unit).append("\n"));
         builder.append(", price=").append(price);
         builder.append(", weight=").append(weight);
         builder.append(", status=").append(status);
