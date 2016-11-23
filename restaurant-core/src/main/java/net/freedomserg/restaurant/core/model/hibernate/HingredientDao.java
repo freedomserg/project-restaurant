@@ -4,11 +4,13 @@ import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -23,6 +25,11 @@ public class HingredientDao implements IngredientDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Ingredient ingredient) {
+        Ingredient target = loadByName(ingredient.getIngredientName());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Ingredient with such name already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(ingredient);
     }
 
@@ -46,7 +53,13 @@ public class HingredientDao implements IngredientDao {
                 ("SELECT i FROM Ingredient i WHERE i.ingredientName like :name AND i.status = :status");
         query.setParameter("name", name);
         query.setParameter("status", Status.ACTUAL);
-        return (Ingredient) query.getSingleResult();
+        Ingredient ingredient;
+        try{
+            ingredient = (Ingredient) query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+        return ingredient;
     }
 
     @Override
