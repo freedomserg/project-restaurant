@@ -44,8 +44,10 @@ public class HdishDao implements DishDao {
         dish.setStatus(Status.DELETED);
         sessionFactory.getCurrentSession().update(dish);
         List<DishUnit> units = dish.getUnits();
-        for (DishUnit unit : units) {
-            dishUnitDao.remove(unit);
+        if (units != null) {
+            for (DishUnit unit : units) {
+                dishUnitDao.remove(unit);
+            }
         }
     }
 
