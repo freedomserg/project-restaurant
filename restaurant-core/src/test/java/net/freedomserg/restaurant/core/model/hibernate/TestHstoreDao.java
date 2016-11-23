@@ -110,6 +110,15 @@ public class TestHstoreDao {
     @Test
     @Transactional
     @Rollback
+    public void testFailedLoadByIngredientAsNoSuchEntity() {
+        Store extracted = storeDao.loadByIngredient(ingredient);
+
+        assertNull(extracted);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     public void testUpdate() {
         int id = storeDao.save(createStoreEntity());
         Store extracted = storeDao.loadById(id);
