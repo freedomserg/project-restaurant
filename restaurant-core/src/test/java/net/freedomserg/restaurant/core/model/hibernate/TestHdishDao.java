@@ -2,9 +2,9 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.CategoryDao;
 import net.freedomserg.restaurant.core.model.dao.DishDao;
-import net.freedomserg.restaurant.core.model.entity.Category;
-import net.freedomserg.restaurant.core.model.entity.Dish;
-import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
+import net.freedomserg.restaurant.core.model.dao.IngredientDao;
+import net.freedomserg.restaurant.core.model.entity.*;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -35,11 +36,19 @@ public class TestHdishDao {
     @Autowired
     private CategoryDao categoryDao;
 
+    @Autowired
+    private DishUnitDao dishUnitDao;
+
+    @Autowired
+    private IngredientDao ingredientDao;
+
     private Category category;
     public static final String TEST_DISH_NAME = "Green salad";
     public static final int TEST_DISH_WEIGHT = 300;
     public static final double TEST_DISH_PRICE = 2.5;
     public static final String TEST_CATEGORY_NAME = "Salads";
+    public static final String TEST_INGREDIENT_NAME = "Arugula";
+    public static final int TEST_DISHUNIT_QUANTITY = 50;
 
     @Transactional
     @Before
@@ -151,14 +160,41 @@ public class TestHdishDao {
     @Transactional
     @Rollback
     public void testRemove() {
-        int id = dishDao.save(createDishEntity());
-        Dish extracted = dishDao.loadById(id);
-        dishDao.remove(extracted);
+        int dishId = dishDao.save(createDishEntity());
+        Dish extractedDish = dishDao.loadById(dishId);
+
+        int ingredientId = ingredientDao.save(createIngredientEntity());
+        Ingredient extractedIngredient = ingredientDao.loadById(ingredientId);
+
+        DishUnit dishUnit = createDishUnitEntity(extractedDish, extractedIngredient);
+        int dishUnitId = dishUnitDao.save(dishUnit);
+        DishUnit extractedDishUnit = dishUnitDao.loadById(dishUnitId);
+
+        extractedDish.setUnits(Arrays.asList(extractedDishUnit));
+        dishDao.update(extractedDish);
+        extractedDish = dishDao.loadById(dishId);
+
+        dishDao.remove(extractedDish);
         List<Dish> dishes = dishDao.loadAll();
+        List<DishUnit> dishUnits = dishUnitDao.loadAll();
 
         assertTrue(dishes.isEmpty());
+        assertTrue(dishUnits.isEmpty());
     }
 
+    private DishUnit createDishUnitEntity(Dish dish, Ingredient ingredient) {
+        DishUnit dishUnit = new DishUnit();
+        dishUnit.setDish(dish);
+        dishUnit.setIngredient(ingredient);
+        dishUnit.setQuantity(TEST_DISHUNIT_QUANTITY);
+        return dishUnit;
+    }
+
+    private Ingredient createIngredientEntity() {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredientName(TEST_INGREDIENT_NAME);
+        return ingredient;
+    }
 
     private Dish createDishEntity() {
         Dish dish = new Dish();
@@ -168,5 +204,4 @@ public class TestHdishDao {
         dish.setCategory(category);
         return dish;
     }
-
 }
