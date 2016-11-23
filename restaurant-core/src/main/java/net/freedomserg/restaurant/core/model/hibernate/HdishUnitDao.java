@@ -5,10 +5,12 @@ import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -23,6 +25,11 @@ public class HdishUnitDao implements DishUnitDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(DishUnit dishUnit) {
+        DishUnit target = load(dishUnit.getDish(), dishUnit.getIngredient());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("DishUnit entity with such Dish and Ingredient already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(dishUnit);
     }
 
@@ -48,7 +55,13 @@ public class HdishUnitDao implements DishUnitDao {
         query.setParameter("dish", dish.getDishId());
         query.setParameter("ingredient", ingredient.getIngredientId());
         query.setParameter("status", Status.ACTUAL);
-        return (DishUnit) query.getSingleResult();
+        DishUnit dishUnit;
+        try{
+            dishUnit = (DishUnit) query.getSingleResult();
+        }catch (NoResultException ex) {
+            return null;
+        }
+        return dishUnit;
     }
 
     @Override
