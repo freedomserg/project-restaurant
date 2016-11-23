@@ -5,6 +5,7 @@ import net.freedomserg.restaurant.core.model.dao.StoreDao;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Store;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,6 +75,14 @@ public class TestHstoreDao {
         assertEquals(ingredient, extracted.getIngredient());
         assertEquals(TEST_INGREDIENT_QUANTITY, extracted.getQuantity());
         assertEquals(Status.ACTUAL, stores.get(0).getStatus());
+    }
+
+    @Test(expected = SuchEntityAlreadyExistsRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedSaveWithIdenticalIngredient() {
+        storeDao.save(createStoreEntity());
+        storeDao.save(createStoreEntity());
     }
 
     @Test
