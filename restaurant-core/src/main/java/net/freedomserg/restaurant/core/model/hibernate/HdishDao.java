@@ -5,10 +5,12 @@ import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
 import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -28,6 +30,11 @@ public class HdishDao implements DishDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Dish dish) {
+        Dish target = loadByName(dish.getDishName());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Dish entity with such name already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(dish);
     }
 
@@ -55,7 +62,13 @@ public class HdishDao implements DishDao {
                 ("SELECT d FROM Dish d WHERE d.dishName like :name AND d.status = :status");
         query.setParameter("name", name);
         query.setParameter("status", Status.ACTUAL);
-        return (Dish)query.getSingleResult();
+        Dish dish;
+        try{
+            dish = (Dish)query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+        return dish;
     }
 
     @Override
