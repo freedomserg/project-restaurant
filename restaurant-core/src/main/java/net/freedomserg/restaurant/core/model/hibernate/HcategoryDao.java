@@ -3,10 +3,12 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.CategoryDao;
 import net.freedomserg.restaurant.core.model.entity.Category;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -21,6 +23,11 @@ public class HcategoryDao implements CategoryDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Category category) {
+        Category target = loadByName(category.getCategoryName());
+        if (target != null) {
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Category entity with such name already exists!");
+        }
         return (Integer) sessionFactory.getCurrentSession().save(category);
     }
 
@@ -44,7 +51,13 @@ public class HcategoryDao implements CategoryDao {
                 ("SELECT c FROM Category c WHERE c.categoryName like :name AND c.status = :status");
         query.setParameter("name", name);
         query.setParameter("status", Status.ACTUAL);
-        return (Category)query.getSingleResult();
+        Category category;
+        try{
+            category = (Category)query.getSingleResult();
+        }catch (NoResultException ex) {
+            return null;
+        }
+        return category;
     }
 
     @Override

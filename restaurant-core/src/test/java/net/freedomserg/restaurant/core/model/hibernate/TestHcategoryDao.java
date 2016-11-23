@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.CategoryDao;
 import net.freedomserg.restaurant.core.model.entity.Category;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,15 @@ public class TestHcategoryDao {
         assertEquals(Status.ACTUAL, categories.get(0).getStatus());
     }
 
+    @Test(expected = SuchEntityAlreadyExistsRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedSaveWithIdenticalCategoryName() {
+        Category category = createCategory(TEST_CATEGORY_NAME_1);
+        categoryDao.save(category);
+        categoryDao.save(category);
+    }
+
     @Test
     @Transactional
     @Rollback
@@ -74,6 +84,16 @@ public class TestHcategoryDao {
         assertNotNull(extracted);
         assertEquals(TEST_CATEGORY_NAME_1, extracted.getCategoryName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testFailedLoadByNameAsNoSuchEntity() {
+        categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
+        Category extracted = categoryDao.loadByName(TEST_CATEGORY_NAME_2);
+
+        assertNull(extracted);
     }
 
     @Test
