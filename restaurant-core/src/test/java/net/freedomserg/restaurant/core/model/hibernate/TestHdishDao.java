@@ -1,8 +1,22 @@
 package net.freedomserg.restaurant.core.model.hibernate;
 
+import net.freedomserg.restaurant.core.model.dao.CategoryDao;
+import net.freedomserg.restaurant.core.model.dao.DishDao;
+import net.freedomserg.restaurant.core.model.entity.Category;
+import net.freedomserg.restaurant.core.model.entity.Dish;
+import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -14,5 +28,145 @@ import static org.junit.Assert.*;
 )
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestHdishDao {
+
+    @Autowired
+    private DishDao dishDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
+
+    private Category category;
+    public static final String TEST_DISH_NAME = "Green salad";
+    public static final int TEST_DISH_WEIGHT = 300;
+    public static final double TEST_DISH_PRICE = 2.5;
+    public static final String TEST_CATEGORY_NAME = "Salads";
+
+    @Transactional
+    @Before
+    public void createAndSaveCategoryToDB() {
+        Category instantiated = new Category();
+        instantiated.setCategoryName(TEST_CATEGORY_NAME);
+        int id = categoryDao.save(instantiated);
+        category = categoryDao.loadById(id);
+    }
+
+    @Transactional
+    @After
+    public void removeCategory() {
+        categoryDao.remove(category);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testLoadAllEmptyDB() {
+        List<Dish> dishes = dishDao.loadAll();
+
+        assertTrue(dishes.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testSave() {
+        int id = dishDao.save(createDishEntity());
+        List<Dish> dishes = dishDao.loadAll();
+
+        assertFalse(dishes.isEmpty());
+
+        Dish dish = dishes.get(0);
+
+        assertEquals(id, dish.getDishId());
+        assertEquals(category, dish.getCategory());
+        assertEquals(TEST_DISH_NAME, dish.getDishName());
+        assertEquals(TEST_DISH_WEIGHT, dish.getWeight());
+        assertEquals(Status.ACTUAL, dish.getStatus());
+    }
+
+    @Test(expected = SuchEntityAlreadyExistsRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedSaveWithIdenticalDishName() {
+        dishDao.save(createDishEntity());
+        dishDao.save(createDishEntity());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testLoadAllOneEntity() {
+        dishDao.save(createDishEntity());
+        List<Dish> dishes = dishDao.loadAll();
+
+        assertEquals(1, dishes.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testLoadByName() {
+        dishDao.save(createDishEntity());
+        Dish extracted = dishDao.loadByName(TEST_DISH_NAME);
+
+        assertNotNull(extracted);
+        assertEquals(TEST_DISH_NAME, extracted.getDishName());
+        assertEquals(Status.ACTUAL, extracted.getStatus());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testFailedLoadByNameAsNoSuchEntity() {
+        Dish extracted = dishDao.loadByName(TEST_DISH_NAME);
+
+        assertNull(extracted);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testLoadById() {
+        int id = dishDao.save(createDishEntity());
+        Dish extracted = dishDao.loadById(id);
+
+        assertNotNull(extracted);
+        assertEquals(id, extracted.getDishId());
+        assertEquals(Status.ACTUAL, extracted.getStatus());
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testUpdate() {
+        int id = dishDao.save(createDishEntity());
+        Dish extracted = dishDao.loadById(id);
+        int updatedWeight = 350;
+        extracted.setWeight(updatedWeight);
+        dishDao.update(extracted);
+        Dish reextracted = dishDao.loadById(id);
+
+        assertEquals(updatedWeight, reextracted.getWeight());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testRemove() {
+        int id = dishDao.save(createDishEntity());
+        Dish extracted = dishDao.loadById(id);
+        dishDao.remove(extracted);
+        List<Dish> dishes = dishDao.loadAll();
+
+        assertTrue(dishes.isEmpty());
+    }
+
+
+    private Dish createDishEntity() {
+        Dish dish = new Dish();
+        dish.setDishName(TEST_DISH_NAME);
+        dish.setWeight(TEST_DISH_WEIGHT);
+        dish.setPrice(TEST_DISH_PRICE);
+        dish.setCategory(category);
+        return dish;
+    }
 
 }
