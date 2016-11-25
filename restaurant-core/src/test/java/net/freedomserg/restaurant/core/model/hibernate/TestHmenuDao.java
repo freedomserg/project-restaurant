@@ -2,6 +2,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.*;
 import net.freedomserg.restaurant.core.model.entity.*;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.After;
 import org.junit.Before;
@@ -167,13 +168,11 @@ public class TestHmenuDao {
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
 
-    @Test
+    @Test(expected = NoSuchEntityRestaurantException.class)
     @Transactional
     @Rollback
-    public void testFailedLoadAsNoSuchEntity() {
-        Menu extracted = menuDao.loadByName(TEST_MENU_NAME);
-
-        assertNull(extracted);
+    public void testFailedLoadByNameAsNoSuchEntity() {
+        menuDao.loadByName(TEST_MENU_NAME);
     }
 
     @Test
@@ -187,6 +186,15 @@ public class TestHmenuDao {
         assertEquals(id, extracted.getMenuId());
         assertEquals(TEST_MENU_NAME, extracted.getMenuName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
+    }
+
+    @Test(expected = NoSuchEntityRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedLoadByIdAsNoSuchId() {
+        int id = menuDao.save(createMenuEntity());
+        int errorShift = 1;
+        menuDao.loadById(id + errorShift);
     }
 
     @Test

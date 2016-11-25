@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.MenuDao;
 import net.freedomserg.restaurant.core.model.entity.Menu;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,12 +24,13 @@ public class HmenuDao implements MenuDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Menu menu) {
-        Menu target = loadByName(menu.getMenuName());
-        if (target != null) {
+        try {
+            Menu target = loadByName(menu.getMenuName());
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Menu with such name already exists!");
+                        ("Menu with name = " + menu.getMenuName() + " already exists!");
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(menu);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(menu);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class HmenuDao implements MenuDao {
         try{
             menu = (Menu)query.getSingleResult();
         }catch (NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException("No existing menu with name = " + name);
         }
         return menu;
     }
@@ -67,7 +69,13 @@ public class HmenuDao implements MenuDao {
                 ("SELECT m FROM Menu m WHERE m.menuId = :id AND m.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (Menu) query.getSingleResult();
+        Menu menu;
+        try{
+            menu = (Menu) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing menu with id = " + id);
+        }
+        return menu;
     }
 
     @Override
