@@ -37,7 +37,8 @@ public class Order implements Serializable {
     @Column(name = "table_number")
     private int tableNumber;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER,
+                cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
     private List<OrderUnit> units;
 

@@ -1,11 +1,15 @@
 package net.freedomserg.restaurant.core.model.hibernate;
 
 import net.freedomserg.restaurant.core.model.dao.OrderDao;
+import net.freedomserg.restaurant.core.model.dao.OrderUnitDao;
 import net.freedomserg.restaurant.core.model.entity.Order;
 import net.freedomserg.restaurant.core.model.entity.OrderStatus;
+import net.freedomserg.restaurant.core.model.entity.OrderUnit;
 import net.freedomserg.restaurant.core.model.entity.Waiter;
 import net.freedomserg.restaurant.core.model.exception.InvalidOrderDateRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +23,14 @@ import java.util.List;
 public class HorderDao implements OrderDao {
 
     private SessionFactory sessionFactory;
+    private OrderUnitDao orderUnitDao;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public void setOrderUnitDao(OrderUnitDao orderUnitDao) {
+        this.orderUnitDao = orderUnitDao;
     }
 
     @Override
@@ -51,7 +60,13 @@ public class HorderDao implements OrderDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Order loadById(int id) {
-        return sessionFactory.getCurrentSession().load(Order.class, id);
+        Order order;
+        try{
+            order = sessionFactory.getCurrentSession().load(Order.class, id);
+        } catch (ObjectNotFoundException ex) {
+            throw new NoSuchEntityRestaurantException("No existing order with id = " + id);
+        }
+        return order;
     }
 
     @Override
@@ -63,12 +78,14 @@ public class HorderDao implements OrderDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public List<Order> loadByDate(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
         java.util.Date inputDate;
         try {
-            inputDate = dateFormat.parse(date);
+            inputDate = formatter.parse(date);
         } catch (ParseException e) {
-            throw new InvalidOrderDateRestaurantException("Invalid input date format!");
+            throw new InvalidOrderDateRestaurantException
+                    ("Invalid input date format: " + date + ". Should be: " + format);
         }
         Date sqlDate = new Date(inputDate.getTime());
         Query query = sessionFactory.getCurrentSession().createQuery
