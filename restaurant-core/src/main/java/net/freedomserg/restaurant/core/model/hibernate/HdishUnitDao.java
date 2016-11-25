@@ -5,6 +5,7 @@ import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,12 +26,15 @@ public class HdishUnitDao implements DishUnitDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(DishUnit dishUnit) {
-        DishUnit target = load(dishUnit.getDish(), dishUnit.getIngredient());
-        if (target != null) {
+        try {
+            DishUnit target = load(dishUnit.getDish(), dishUnit.getIngredient());
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("DishUnit with such Dish and Ingredient already exists!");
+                        ("DishUnit with such Dish = " + dishUnit.getDish().getDishName() +
+                                " and Ingredient = " + dishUnit.getIngredient().getIngredientName() +
+                                    " already exists!");
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(dishUnit);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(dishUnit);
     }
 
     @Override
@@ -59,7 +63,9 @@ public class HdishUnitDao implements DishUnitDao {
         try{
             dishUnit = (DishUnit) query.getSingleResult();
         }catch (NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException
+                    ("No existing dishUnit with dish = " + dish.getDishName() +
+                            " and ingredient = " + ingredient.getIngredientName());
         }
         return dishUnit;
     }
@@ -71,7 +77,13 @@ public class HdishUnitDao implements DishUnitDao {
                 ("SELECT du FROM DishUnit du WHERE du.id = :id AND du.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (DishUnit) query.getSingleResult();
+        DishUnit dishUnit;
+        try{
+            dishUnit = (DishUnit) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing dishUnit with id = " + id);
+        }
+        return dishUnit;
     }
 
     @Override
