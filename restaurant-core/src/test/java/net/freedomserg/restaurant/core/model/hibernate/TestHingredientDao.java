@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,13 +87,11 @@ public class TestHingredientDao {
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
 
-    @Test
+    @Test(expected = NoSuchEntityRestaurantException.class)
     @Transactional
     @Rollback
     public void testFailedLoadByNameAsNoSuchEntity() {
-        Ingredient extracted = ingredientDao.loadByName(TEST_INGREDIENT_NAME_1);
-
-        assertNull(extracted);
+        ingredientDao.loadByName(TEST_INGREDIENT_NAME_1);
     }
 
     @Test
@@ -106,6 +105,15 @@ public class TestHingredientDao {
         assertEquals(TEST_INGREDIENT_NAME_1, extracted.getIngredientName());
         assertEquals(id, extracted.getIngredientId());
         assertEquals(Status.ACTUAL, extracted.getStatus());
+    }
+
+    @Test(expected = NoSuchEntityRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedLoadByIdAsNoSuchId() {
+        int id = ingredientDao.save(createIngredient(TEST_INGREDIENT_NAME_1));
+        int errorShift = 1;
+        ingredientDao.loadById(id + errorShift);
     }
 
     @Test

@@ -4,6 +4,7 @@ import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,12 +26,13 @@ public class HingredientDao implements IngredientDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Ingredient ingredient) {
-        Ingredient target = loadByName(ingredient.getIngredientName());
-        if (target != null) {
+        try {
+            Ingredient target = loadByName(ingredient.getIngredientName());
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Ingredient with such name already exists!");
+                        ("Ingredient with name = " + ingredient.getIngredientName() + " already exists!");
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(ingredient);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(ingredient);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class HingredientDao implements IngredientDao {
         try{
             ingredient = (Ingredient) query.getSingleResult();
         } catch (NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException("No existing ingredient with name = " + name);
         }
         return ingredient;
     }
@@ -69,7 +71,13 @@ public class HingredientDao implements IngredientDao {
                 ("SELECT i FROM Ingredient i WHERE i.ingredientId = :id AND i.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (Ingredient) query.getSingleResult();
+        Ingredient ingredient;
+        try{
+            ingredient = (Ingredient) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing ingredient with id = " + id);
+        }
+        return ingredient;
     }
 
     @Override
