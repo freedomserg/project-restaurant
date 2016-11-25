@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.hibernate;
 import net.freedomserg.restaurant.core.model.dao.CategoryDao;
 import net.freedomserg.restaurant.core.model.entity.Category;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,12 +24,13 @@ public class HcategoryDao implements CategoryDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Category category) {
-        Category target = loadByName(category.getCategoryName());
-        if (target != null) {
+        try{
+            Category target = loadByName(category.getCategoryName());
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Category with such name already exists!");
+                    ("Category with such name = " + category.getCategoryName() + " already exists!");
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(category);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(category);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class HcategoryDao implements CategoryDao {
         try{
             category = (Category)query.getSingleResult();
         }catch (NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException("No existing category with name = " + name);
         }
         return category;
     }
@@ -67,7 +69,13 @@ public class HcategoryDao implements CategoryDao {
                 ("SELECT c FROM Category c WHERE c.categoryId = :id AND c.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (Category) query.getSingleResult();
+        Category category;
+        try{
+            category = (Category) query.getSingleResult();
+        }catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing category with id = " + id);
+        }
+        return category;
     }
 
     @Override
