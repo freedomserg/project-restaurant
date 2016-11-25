@@ -4,6 +4,7 @@ import net.freedomserg.restaurant.core.model.dao.StoreDao;
 import net.freedomserg.restaurant.core.model.entity.Ingredient;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Store;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,12 +25,14 @@ public class HstoreDao implements StoreDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Store store) {
-        Store extracted = loadByIngredient(store.getIngredient());
-        if (extracted != null) {
+        try {
+            Store extracted = loadByIngredient(store.getIngredient());
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Store with such ingredient already exists!");
+                        ("Store with ingredient = " + store.getIngredient().getIngredientName() +
+                                " already exists!");
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(store);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(store);
     }
 
     @Override
@@ -56,7 +59,8 @@ public class HstoreDao implements StoreDao {
         try{
             store = (Store)query.getSingleResult();
         } catch(NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException
+                    ("No existing store with ingredient = " + ingredient.getIngredientName());
         }
         return store;
     }
@@ -68,7 +72,13 @@ public class HstoreDao implements StoreDao {
                 ("SELECT s FROM Store s WHERE s.id = :id AND s.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (Store) query.getSingleResult();
+        Store store;
+        try{
+            store = (Store) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing store with id = " + id);
+        }
+        return store;
     }
 
     @Override
