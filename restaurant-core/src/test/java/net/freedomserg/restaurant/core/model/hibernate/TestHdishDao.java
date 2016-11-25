@@ -5,6 +5,7 @@ import net.freedomserg.restaurant.core.model.dao.DishDao;
 import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
 import net.freedomserg.restaurant.core.model.dao.IngredientDao;
 import net.freedomserg.restaurant.core.model.entity.*;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.After;
 import org.junit.Before;
@@ -122,13 +123,11 @@ public class TestHdishDao {
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
 
-    @Test
+    @Test(expected = NoSuchEntityRestaurantException.class)
     @Transactional
     @Rollback
     public void testFailedLoadByNameAsNoSuchEntity() {
-        Dish extracted = dishDao.loadByName(TEST_DISH_NAME);
-
-        assertNull(extracted);
+        dishDao.loadByName(TEST_DISH_NAME);
     }
 
     @Test
@@ -142,6 +141,16 @@ public class TestHdishDao {
         assertEquals(id, extracted.getDishId());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
+
+    @Test(expected = NoSuchEntityRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedLoadByIdAsNoSuchId() {
+        int id = dishDao.save(createDishEntity());
+        int errorShift = 1;
+        dishDao.loadById(id + errorShift);
+    }
+
     @Test
     @Transactional
     @Rollback

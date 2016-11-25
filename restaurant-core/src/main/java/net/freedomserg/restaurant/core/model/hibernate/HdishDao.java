@@ -5,6 +5,7 @@ import net.freedomserg.restaurant.core.model.dao.DishUnitDao;
 import net.freedomserg.restaurant.core.model.entity.Dish;
 import net.freedomserg.restaurant.core.model.entity.DishUnit;
 import net.freedomserg.restaurant.core.model.entity.Status;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,12 +31,13 @@ public class HdishDao implements DishDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Dish dish) {
-        Dish target = loadByName(dish.getDishName());
-        if (target != null) {
-            throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Dish with such name already exists!");
+        try {
+            Dish target = loadByName(dish.getDishName());
+                throw new SuchEntityAlreadyExistsRestaurantException
+                        ("Dish with such name = " + dish.getDishName() +  " already exists!");
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(dish);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(dish);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class HdishDao implements DishDao {
         try{
             dish = (Dish)query.getSingleResult();
         } catch (NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException("No existing dish with name = " + name);
         }
         return dish;
     }
@@ -80,7 +82,13 @@ public class HdishDao implements DishDao {
                 ("SELECT d FROM Dish d WHERE d.dishId = :id AND d.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (Dish) query.getSingleResult();
+        Dish dish;
+        try{
+            dish = (Dish) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing dish with id = " + id);
+        }
+        return dish;
     }
 
     @Override
