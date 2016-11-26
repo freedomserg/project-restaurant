@@ -3,6 +3,7 @@ package net.freedomserg.restaurant.core.model.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
+@Proxy(lazy = false)
 public class DishUnit implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,11 +40,6 @@ public class DishUnit implements Serializable {
     @NotNull
     private int quantity;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private Status status = Status.ACTUAL;
-
     public int getId() {
         return id;
     }
@@ -65,14 +62,6 @@ public class DishUnit implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public Dish getDish() {
@@ -109,7 +98,6 @@ public class DishUnit implements Serializable {
         builder.append("id=").append(id);
         builder.append(", ingredient=").append(ingredient);
         builder.append(", quantity=").append(quantity);
-        builder.append(", status=").append(status);
         builder.append("}");
         return builder.toString();
     }

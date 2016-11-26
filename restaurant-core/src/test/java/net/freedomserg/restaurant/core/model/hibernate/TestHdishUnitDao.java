@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -117,7 +118,6 @@ public class TestHdishUnitDao {
         DishUnit extracted = dishUnits.get(0);
 
         assertEquals(id, extracted.getId());
-        assertEquals(Status.ACTUAL, extracted.getStatus());
         assertEquals(dish, extracted.getDish());
         assertEquals(ingredient, extracted.getIngredient());
         assertEquals(TEST_DISHUNIT_QUANTITY, extracted.getQuantity());
@@ -152,7 +152,6 @@ public class TestHdishUnitDao {
         assertNotNull(extracted);
         assertEquals(dish, extracted.getDish());
         assertEquals(ingredient, extracted.getIngredient());
-        assertEquals(Status.ACTUAL, extracted.getStatus());
     }
 
     @Test(expected = NoSuchEntityRestaurantException.class)
@@ -171,7 +170,6 @@ public class TestHdishUnitDao {
 
         assertNotNull(extracted);
         assertEquals(id, extracted.getId());
-        assertEquals(Status.ACTUAL, extracted.getStatus());
     }
 
     @Test(expected = NoSuchEntityRestaurantException.class)
@@ -203,9 +201,16 @@ public class TestHdishUnitDao {
     public void testRemove() {
         int id = dishUnitDao.save(createDishUnitEntity());
         DishUnit extracted = dishUnitDao.loadById(id);
+        dish.setUnits(Arrays.asList(extracted));
+        dishDao.update(dish);
+        dish = dishDao.loadById(dish.getDishId());
+
         dishUnitDao.remove(extracted);
         List<DishUnit> dishUnits = dishUnitDao.loadAll();
 
+        dish = dishDao.loadById(dish.getDishId());
+
         assertTrue(dishUnits.isEmpty());
+        assertTrue(dish.getUnits().isEmpty());
     }
 }
