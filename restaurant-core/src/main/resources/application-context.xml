@@ -61,6 +61,7 @@
     <!--hOrderUnitDao-->
     <bean id="hOrderUnitDao" class="net.freedomserg.restaurant.core.model.hibernate.HorderUnitDao">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="orderDao" ref="hOrderDao"/>
     </bean>
 
     <!--employeeService-->

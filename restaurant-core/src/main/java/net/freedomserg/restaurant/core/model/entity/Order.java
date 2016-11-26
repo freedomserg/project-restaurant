@@ -37,8 +37,10 @@ public class Order implements Serializable {
     @Column(name = "table_number")
     private int tableNumber;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER,
-                cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order",
+                fetch = FetchType.EAGER,
+                cascade = CascadeType.ALL,
+                orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
     private List<OrderUnit> units;
 
@@ -130,8 +132,10 @@ public class Order implements Serializable {
         builder.append("orderId=").append(orderId);
         builder.append(", tableNumber=").append(tableNumber);
         builder.append(", orderDate=").append(new SimpleDateFormat("dd/MM/yyyy").format(orderDate));
-        builder.append(", dishes:").append("\n");
-        units.forEach(dish -> builder.append(dish).append("\n"));
+        builder.append(", units:").append("\n");
+        if (units != null) {
+            units.forEach(dish -> builder.append(dish).append("\n"));
+        }
         builder.append(", status=").append(status);
         builder.append("}");
         return builder.toString();
