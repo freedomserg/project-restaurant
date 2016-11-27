@@ -12,8 +12,7 @@ import java.util.Map;
 public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Map<String, Object> model) {
-        model.put("currentTime", new SimpleDateFormat("hh:mm:ss").format(new Date()));
+    public String index() {
         return "index";
     }
 }
