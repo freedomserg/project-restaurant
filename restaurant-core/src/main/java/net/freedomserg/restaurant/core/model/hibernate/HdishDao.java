@@ -34,7 +34,9 @@ public class HdishDao implements DishDao {
         try {
             Dish target = loadByName(dish.getDishName());
                 throw new SuchEntityAlreadyExistsRestaurantException
-                        ("Dish with such name = " + dish.getDishName() +  " already exists!");
+                        ("Such dish already exists! " +
+                                "id: " + dish.getDishId() +
+                                "name: " + dish.getDishName());
         } catch (NoSuchEntityRestaurantException ex) {
             return (Integer) sessionFactory.getCurrentSession().save(dish);
         }

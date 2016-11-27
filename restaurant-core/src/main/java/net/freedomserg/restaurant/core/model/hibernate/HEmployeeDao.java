@@ -27,7 +27,9 @@ public class HemployeeDao implements EmployeeDao {
         Employee target = loadByName(employee.getName());
         if (target != null) {
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Employee with such name already exists!");
+                    ("Such employee already exists! " +
+                            "id: " + employee.getId() +
+                            "name: " + employee.getName());
         }
         return (Integer) sessionFactory.getCurrentSession().save(employee);
     }

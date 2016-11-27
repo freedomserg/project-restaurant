@@ -37,8 +37,9 @@ public class HorderUnitDao implements OrderUnitDao {
         try {
             OrderUnit target = load(orderUnit.getOrder(), orderUnit.getDish());
             throw new SuchEntityAlreadyExistsRestaurantException
-                        ("OrderUnit with such orderId = " + orderUnit.getOrder().getOrderId() +
-                                " and dish = " + orderUnit.getDish().getDishName() + " already exists!");
+                        ("Such orderUnit already exists! orderId: " + orderUnit.getOrder().getOrderId() +
+                                " dish: id: " + orderUnit.getDish().getDishId() +
+                                        " name: " + orderUnit.getDish().getDishName());
         } catch (NoSuchEntityRestaurantException ex) {
             return (Integer) sessionFactory.getCurrentSession().save(orderUnit);
         }

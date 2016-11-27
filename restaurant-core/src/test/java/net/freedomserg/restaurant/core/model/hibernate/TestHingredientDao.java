@@ -82,7 +82,6 @@ public class TestHingredientDao {
         ingredientDao.save(createIngredient(TEST_INGREDIENT_NAME_1));
         Ingredient extracted = ingredientDao.loadByName(TEST_INGREDIENT_NAME_1);
 
-        assertNotNull(extracted);
         assertEquals(TEST_INGREDIENT_NAME_1, extracted.getIngredientName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
@@ -101,7 +100,6 @@ public class TestHingredientDao {
         int id = ingredientDao.save(createIngredient(TEST_INGREDIENT_NAME_1));
         Ingredient extracted = ingredientDao.loadById(id);
 
-        assertNotNull(extracted);
         assertEquals(TEST_INGREDIENT_NAME_1, extracted.getIngredientName());
         assertEquals(id, extracted.getIngredientId());
         assertEquals(Status.ACTUAL, extracted.getStatus());

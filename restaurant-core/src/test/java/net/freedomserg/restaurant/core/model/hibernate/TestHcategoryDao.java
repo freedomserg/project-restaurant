@@ -83,7 +83,6 @@ public class TestHcategoryDao {
         categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
         Category extracted = categoryDao.loadByName(TEST_CATEGORY_NAME_1);
 
-        assertNotNull(extracted);
         assertEquals(TEST_CATEGORY_NAME_1, extracted.getCategoryName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
@@ -103,7 +102,6 @@ public class TestHcategoryDao {
         int id = categoryDao.save(createCategory(TEST_CATEGORY_NAME_1));
         Category extracted = categoryDao.loadById(id);
 
-        assertNotNull(extracted);
         assertEquals(TEST_CATEGORY_NAME_1, extracted.getCategoryName());
         assertEquals(id, extracted.getCategoryId());
         assertEquals(Status.ACTUAL, extracted.getStatus());

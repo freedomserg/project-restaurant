@@ -9,6 +9,7 @@ import net.freedomserg.restaurant.core.model.entity.Waiter;
 import net.freedomserg.restaurant.core.model.exception.InvalidOrderDateRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,7 +37,13 @@ public class HorderDao implements OrderDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Order order) {
-        return (Integer) sessionFactory.getCurrentSession().save(order);
+        try{
+            Order target = loadById(order.getOrderId());
+            throw new SuchEntityAlreadyExistsRestaurantException
+                    ("Such order already exists! id = " + order.getOrderId());
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(order);
+        }
     }
 
     @Override

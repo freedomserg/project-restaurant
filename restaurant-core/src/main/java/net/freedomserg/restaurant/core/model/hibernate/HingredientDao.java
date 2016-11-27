@@ -29,7 +29,9 @@ public class HingredientDao implements IngredientDao {
         try {
             Ingredient target = loadByName(ingredient.getIngredientName());
             throw new SuchEntityAlreadyExistsRestaurantException
-                        ("Ingredient with name = " + ingredient.getIngredientName() + " already exists!");
+                        ("Such ingredient already exists! " +
+                                "id: " + ingredient.getIngredientId() +
+                                " name: " + ingredient.getIngredientName());
         } catch (NoSuchEntityRestaurantException ex) {
             return (Integer) sessionFactory.getCurrentSession().save(ingredient);
         }

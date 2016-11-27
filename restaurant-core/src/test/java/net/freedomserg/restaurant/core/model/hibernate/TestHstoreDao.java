@@ -104,7 +104,6 @@ public class TestHstoreDao {
         storeDao.save(createStoreEntity());
         Store extracted = storeDao.loadByIngredient(ingredient);
 
-        assertNotNull(extracted);
         assertEquals(ingredient, extracted.getIngredient());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
@@ -149,7 +148,6 @@ public class TestHstoreDao {
         int id = storeDao.save(createStoreEntity());
         Store extracted = storeDao.loadById(id);
 
-        assertNotNull(extracted);
         assertEquals(id, extracted.getId());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }

@@ -38,9 +38,11 @@ public class HdishUnitDao implements DishUnitDao {
         try {
             DishUnit target = load(dishUnit.getDish(), dishUnit.getIngredient());
             throw new SuchEntityAlreadyExistsRestaurantException
-                        ("DishUnit with such Dish = " + dishUnit.getDish().getDishName() +
-                                " and Ingredient = " + dishUnit.getIngredient().getIngredientName() +
-                                    " already exists!");
+                        ("Such dishUnit already exists! " +
+                                "Dish: id: " + dishUnit.getDish().getDishId() +
+                                        " name: " + dishUnit.getDish().getDishName() +
+                                " Ingredient: id: " + dishUnit.getIngredient().getIngredientId() +
+                                    " name: " + dishUnit.getIngredient().getIngredientName());
         } catch (NoSuchEntityRestaurantException ex) {
             return (Integer) sessionFactory.getCurrentSession().save(dishUnit);
         }

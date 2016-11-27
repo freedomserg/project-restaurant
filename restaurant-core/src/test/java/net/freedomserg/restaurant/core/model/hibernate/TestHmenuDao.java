@@ -163,7 +163,6 @@ public class TestHmenuDao {
         menuDao.save(createMenuEntity());
         Menu extracted = menuDao.loadByName(TEST_MENU_NAME);
 
-        assertNotNull(extracted);
         assertEquals(TEST_MENU_NAME, extracted.getMenuName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
@@ -182,7 +181,6 @@ public class TestHmenuDao {
         int id = menuDao.save(createMenuEntity());
         Menu extracted = menuDao.loadById(id);
 
-        assertNotNull(extracted);
         assertEquals(id, extracted.getMenuId());
         assertEquals(TEST_MENU_NAME, extracted.getMenuName());
         assertEquals(Status.ACTUAL, extracted.getStatus());

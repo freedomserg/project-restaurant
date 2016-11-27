@@ -118,7 +118,6 @@ public class TestHdishDao {
         dishDao.save(createDishEntity());
         Dish extracted = dishDao.loadByName(TEST_DISH_NAME);
 
-        assertNotNull(extracted);
         assertEquals(TEST_DISH_NAME, extracted.getDishName());
         assertEquals(Status.ACTUAL, extracted.getStatus());
     }
@@ -137,9 +136,18 @@ public class TestHdishDao {
         int id = dishDao.save(createDishEntity());
         Dish extracted = dishDao.loadById(id);
 
-        assertNotNull(extracted);
         assertEquals(id, extracted.getDishId());
         assertEquals(Status.ACTUAL, extracted.getStatus());
+    }
+
+
+    @Test(expected = SuchEntityAlreadyExistsRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedSaveWithIdenticalId() {
+        int id = dishDao.save(createDishEntity());
+        Dish extracted = dishDao.loadById(id);
+        dishDao.save(extracted);
     }
 
     @Test(expected = NoSuchEntityRestaurantException.class)

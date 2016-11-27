@@ -27,7 +27,9 @@ public class HmenuDao implements MenuDao {
         try {
             Menu target = loadByName(menu.getMenuName());
             throw new SuchEntityAlreadyExistsRestaurantException
-                        ("Menu with name = " + menu.getMenuName() + " already exists!");
+                        ("Such menu already exists! " +
+                                "id: " + menu.getMenuId() +
+                                " name: " + menu.getMenuName());
         } catch (NoSuchEntityRestaurantException ex) {
             return (Integer) sessionFactory.getCurrentSession().save(menu);
         }

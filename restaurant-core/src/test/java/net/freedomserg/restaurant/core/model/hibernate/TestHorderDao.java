@@ -5,6 +5,7 @@ import net.freedomserg.restaurant.core.model.entity.*;
 import net.freedomserg.restaurant.core.model.exception.IllegalOperationRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.InvalidOrderDateRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
+import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -141,7 +142,6 @@ public class TestHorderDao {
         int id = orderDao.save(createOrderEntity());
         Order extracted = orderDao.loadById(id);
 
-        assertNotNull(extracted);
         assertEquals(id, extracted.getOrderId());
         assertEquals(OrderStatus.OPENED, extracted.getStatus());
     }
@@ -153,6 +153,15 @@ public class TestHorderDao {
         int id = orderDao.save(createOrderEntity());
         int errorShift = 1;
         orderDao.loadById(id + errorShift);
+    }
+
+    @Test(expected = SuchEntityAlreadyExistsRestaurantException.class)
+    @Transactional
+    @Rollback
+    public void testFailedSaveWithIdenticalId() {
+        int id = orderDao.save(createOrderEntity());
+        Order extracted = orderDao.loadById(id);
+        orderDao.save(extracted);
     }
 
     @Test
