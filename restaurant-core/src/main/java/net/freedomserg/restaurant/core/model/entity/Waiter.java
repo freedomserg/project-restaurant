@@ -34,7 +34,9 @@ public class Waiter extends Employee {
         StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append("orders: ").append("\n");
-        orders.forEach(order -> builder.append(order).append("\n"));
+        if (orders != null) {
+            orders.forEach(order -> builder.append(order).append("\n"));
+        }
         return builder.toString();
     }
 

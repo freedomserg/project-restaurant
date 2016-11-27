@@ -4,6 +4,7 @@ import net.freedomserg.restaurant.core.model.dao.EmployeeDao;
 import net.freedomserg.restaurant.core.model.entity.Employee;
 import net.freedomserg.restaurant.core.model.entity.Status;
 import net.freedomserg.restaurant.core.model.entity.Waiter;
+import net.freedomserg.restaurant.core.model.exception.NoSuchEntityRestaurantException;
 import net.freedomserg.restaurant.core.model.exception.SuchEntityAlreadyExistsRestaurantException;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,14 +25,15 @@ public class HemployeeDao implements EmployeeDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Integer save(Employee employee) {
-        Employee target = loadByName(employee.getName());
-        if (target != null) {
+        try {
+            Employee target = loadByName(employee.getName());
             throw new SuchEntityAlreadyExistsRestaurantException
-                    ("Such employee already exists! " +
-                            "id: " + employee.getId() +
-                            "name: " + employee.getName());
+                        ("Such employee already exists! " +
+                                "id: " + employee.getId() +
+                                "name: " + employee.getName());
+        } catch (NoSuchEntityRestaurantException ex) {
+            return (Integer) sessionFactory.getCurrentSession().save(employee);
         }
-        return (Integer) sessionFactory.getCurrentSession().save(employee);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class HemployeeDao implements EmployeeDao {
         try{
             employee = (Employee) query.getSingleResult();
         }catch (NoResultException ex) {
-            return null;
+            throw new NoSuchEntityRestaurantException("No existing employee with name = " + name);
         }
         return employee;
     }
@@ -70,7 +72,13 @@ public class HemployeeDao implements EmployeeDao {
                 ("SELECT e FROM Employee e WHERE e.id = :id AND e.status = :status");
         query.setParameter("id", id);
         query.setParameter("status", Status.ACTUAL);
-        return (Employee) query.getSingleResult();
+        Employee employee;
+        try{
+            employee = (Employee) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing employee with id = " + id);
+        }
+        return employee;
     }
 
     @Override
@@ -90,7 +98,13 @@ public class HemployeeDao implements EmployeeDao {
         query.setParameter("name", name);
         query.setParameter("etype", Waiter.class);
         query.setParameter("status", Status.ACTUAL);
-        return (Waiter) query.getSingleResult();
+        Waiter waiter;
+        try{
+            waiter = (Waiter) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing waiter with name = " + name);
+        }
+        return waiter;
     }
 
     @Override
@@ -101,7 +115,13 @@ public class HemployeeDao implements EmployeeDao {
         query.setParameter("id", id);
         query.setParameter("etype", Waiter.class);
         query.setParameter("status", Status.ACTUAL);
-        return (Waiter) query.getSingleResult();
+        Waiter waiter;
+        try{
+            waiter = (Waiter) query.getSingleResult();
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityRestaurantException("No existing waiter with id = " + id);
+        }
+        return waiter;
     }
 
     @Override
