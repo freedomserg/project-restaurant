@@ -10,7 +10,6 @@ div.container {
     width: 100%;
     border: 1px solid gray;
     min-height: 100%;
-    height: auto !important;
     height: 100%;
 }
 
@@ -26,7 +25,7 @@ footer {
     margin: -100px auto 0;
     min-width: 1000px;
     max-width: 2000px;
-    height: 50px;
+    height: 30px;
     position: relative;
 }
 
