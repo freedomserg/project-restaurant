@@ -16,9 +16,9 @@
 
         <nav>
             <ul>
-                <li><a href="#">Main</a></li>
+                <li><a href="/restaurant/">Main</a></li>
                 <li><a href="#">Schema</a></li>
-                <li><a href="#">Our team</a></li>
+                <li><a href="/restaurant/employee">Our team</a></li>
                 <li><a href="#">Contacts</a></li>
             </ul>
         </nav>

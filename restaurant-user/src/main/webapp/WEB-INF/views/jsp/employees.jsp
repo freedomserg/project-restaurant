@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>City cafe</title>
 </head>
 <body>
 <table style="align-items: center">
@@ -11,7 +11,7 @@
         <th>Position</th>
         <th>Salary</th>
     </tr>
-    <c:forEach items="${employees}" var="employee">
+    <c:forEach items="${employee}" var="employee">
         <tr>
             <td>${employee.name}</td>
             <td>${employee.position}</td>
