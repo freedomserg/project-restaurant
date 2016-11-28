@@ -58,8 +58,8 @@ public class Bootstrap {
 
     public static void main(String[] args) {
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("core-application-context.xml",
-                "core-hibernate-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context-core.xml",
+                "hibernate-context-core.xml");
         Bootstrap bootstrap = applicationContext.getBean("bootstrap", Bootstrap.class);
         bootstrap.start();
 
