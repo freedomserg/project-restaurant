@@ -16,7 +16,7 @@
 
     <!--property file support-->
     <bean id="jdbcConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:jdbc.properties"/>
+        <property name="location" value="classpath:jdbc-core.properties"/>
     </bean>
 
     <!--Spring ORM Transactions manager-->
