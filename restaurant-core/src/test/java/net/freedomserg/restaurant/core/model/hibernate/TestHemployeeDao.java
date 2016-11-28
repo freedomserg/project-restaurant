@@ -22,8 +22,8 @@ import static org.junit.Assert.*;
 
 @ContextConfiguration(locations =
         {
-                "classpath:application-context-test.xml",
-                "classpath:hibernate-context-test.xml"
+                "classpath:core-application-context-test.xml",
+                "classpath:core-hibernate-context-test.xml"
         }
 )
 @RunWith(SpringJUnit4ClassRunner.class)

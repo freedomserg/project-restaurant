@@ -7,10 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class Bootstrap {
 
     private EmployeeService employeeService;
@@ -62,8 +58,8 @@ public class Bootstrap {
 
     public static void main(String[] args) {
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml",
-                "hibernate-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("core-application-context.xml",
+                "core-hibernate-context.xml");
         Bootstrap bootstrap = applicationContext.getBean("bootstrap", Bootstrap.class);
         bootstrap.start();
 
