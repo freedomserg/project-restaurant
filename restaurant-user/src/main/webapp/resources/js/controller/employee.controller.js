@@ -1,6 +1,9 @@
-var app = angular.module("restaurantApp");
-app.controller("restaurantCtrl", restaurantCtrl);
+(function() {
 
-function restaurantCtrl() {
-    
-}
+    var app = angular.module("restaurantApp");
+    app.controller("employeeCtrl", employeeCtrl);
+
+    function employeeCtrl() {
+
+    }
+})();
