@@ -13,6 +13,23 @@
         <property name="employeeDao" ref="hEmployeeDao"/>
     </bean>
 
+    <!--hDishUnitDao-->
+    <bean id="hdishUnitDao" class="net.freedomserg.restaurant.core.model.hibernate.HdishUnitDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="dishDao" ref="hdishDao"/>
+    </bean>
+
+    <!--hDishDao-->
+    <bean id="hdishDao" class="net.freedomserg.restaurant.core.model.hibernate.HdishDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="dishUnitDao" ref="hdishUnitDao"/>
+    </bean>
+
+    <!--dishService-->
+    <bean id="dishService" class="net.freedomserg.restaurant.core.service.DishService">
+        <property name="dishDao" ref="hdishDao"/>
+    </bean>
+
 
 
 
