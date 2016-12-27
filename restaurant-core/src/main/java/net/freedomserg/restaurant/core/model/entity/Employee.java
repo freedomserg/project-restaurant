@@ -38,6 +38,9 @@ public class Employee implements Serializable {
     @Column(name = "salary")
     private double salary;
 
+    @Column(name = "picture")
+    private String picture;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -89,6 +92,14 @@ public class Employee implements Serializable {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Status getStatus() {
