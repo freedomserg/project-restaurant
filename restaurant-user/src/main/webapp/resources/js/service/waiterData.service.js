@@ -3,7 +3,7 @@
     app.service("waiterDataSvc", function($http){
         var self = this;
         self.getWaiters = function() {
-            return $http.get("http://localhost:8080/restaurant/waiter")
+            return $http.get("http://localhost:8080/restaurant/waiters")
                 .then(function(response){
                 return response.data;
             });

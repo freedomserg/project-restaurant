@@ -15,7 +15,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @RequestMapping(value = "/waiter", method = RequestMethod.GET)
+    @RequestMapping(value = "/waiters", method = RequestMethod.GET)
     public List<Waiter> getAllWaiters() {
         return employeeService.getAllWaiters();
     }
