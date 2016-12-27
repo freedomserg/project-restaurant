@@ -52,7 +52,7 @@
                                 <img ng-src="{{ctrl.selectedWaiter.picture}}"></img>
                             </a>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body" ng-show="ctrl.selectedWaiter">
                             <p>
                                 <span>Name:</span>
                                 <span>{{ctrl.selectedWaiter.name}}</span>
