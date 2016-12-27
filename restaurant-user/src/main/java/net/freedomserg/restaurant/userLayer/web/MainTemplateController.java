@@ -11,4 +11,14 @@ public class MainTemplateController {
     public String getStaff() {
         return "staff";
     }
+
+    @RequestMapping(value = "/schema", method = RequestMethod.GET)
+    public String getSchema() {
+        return "schema";
+    }
+
+    @RequestMapping(value = "/contacts", method = RequestMethod.GET)
+    public String getContacts() {
+        return "contacts";
+    }
 }

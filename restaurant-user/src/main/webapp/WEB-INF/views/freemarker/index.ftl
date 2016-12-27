@@ -20,9 +20,9 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/restaurant/">Home</a></li>
-                <li><a href="#">Schema</a></li>
+                <li><a href="/restaurant/schema">Schema</a></li>
                 <li><a href="/restaurant/staff">Our staff</a></li>
-                <li><a href="#">Contacts</a></li>
+                <li><a href="/restaurant/contacts">Contacts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
