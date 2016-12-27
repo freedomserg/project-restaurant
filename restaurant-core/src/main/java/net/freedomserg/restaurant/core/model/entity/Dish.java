@@ -45,6 +45,9 @@ public class Dish implements Serializable {
     @Column(name = "weight")
     private int weight;
 
+    @Column(name = "picture")
+    private String picture;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -96,6 +99,14 @@ public class Dish implements Serializable {
 
     public void setUnits(List<DishUnit> units) {
         this.units = units;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Status getStatus() {
