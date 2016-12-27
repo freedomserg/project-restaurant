@@ -8,7 +8,6 @@
 
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.min.js"></script>
         <script type="text/javascript" src="<@spring.url '/resources/js/app.js'/>"></script>
-        <script type="text/javascript" src="<@spring.url '/resources/js/controller/employee.controller.js'/>"></script>
     </head>
 
     <body>
