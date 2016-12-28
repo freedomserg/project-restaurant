@@ -34,14 +34,31 @@
 
         <div class="container-fluid" ng-controller="dishCtrl as ctrl">
 
-            <div class="page-header">
-                <h4>Menu</h4>
+            <div class="row">
+
+                <div class="col-md-3">
+                    <h4>Menu</h4>
+                </div>
+
+                <div class="col-md-4 col-md-offset-3">
+                    <h4>Search dish</h4>
+                    <form action="" class="search-form">
+                        <div class="form-group has-feedback">
+                            <label for="search" class="sr-only">Search</label>
+                            <input ng-model="searchBox" type="text" class="form-control" name="search" id="search" placeholder="search">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                </div>
+
             </div>
+
+
 
             <div class="row">
                 <div class="col-md-4">
                     <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="dish in ctrl.dishes" ng-click="ctrl.selectDish($index)">
+                        <li class="list-group-item" ng-repeat="dish in ctrl.dishes | filter:searchBox" ng-click="ctrl.selectDish(dish.dishName)">
                             <div>{{dish.dishName}}</div>
                             <ul>
                                 <li>price: {{dish.price}}$</li>
