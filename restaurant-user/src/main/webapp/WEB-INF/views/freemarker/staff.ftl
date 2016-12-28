@@ -35,7 +35,7 @@
             </div>
         </nav>
 
-        <div class="container" ng-controller="waiterCtrl as ctrl">
+        <div class="container-fluid" ng-controller="waiterCtrl as ctrl">
             <div class="row">
                 <div class="col-md-6">
                     <ul class="list-group">
@@ -49,7 +49,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img ng-src="{{ctrl.selectedWaiter.picture}}"></img>
+                                <img ng-src="<@spring.url '{{ctrl.selectedWaiter.picture}}'/>"></img>
                             </a>
                         </div>
                         <div class="media-body" ng-show="ctrl.selectedWaiter">
@@ -63,6 +63,9 @@
             </div>
         </div>
 
+        <div class="container-fluid">
+            <#include "/WEB-INF/views/freemarker/footer.ftl">
+        </div>
 
     </body>
 </html>
