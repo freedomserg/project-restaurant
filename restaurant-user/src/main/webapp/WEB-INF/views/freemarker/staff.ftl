@@ -37,7 +37,7 @@
 
         <div class="container-fluid" ng-controller="waiterCtrl as ctrl">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="waiter in ctrl.waiters" ng-click="ctrl.selectWaiter($index)">
                             <span>{{waiter.name}}</span>
