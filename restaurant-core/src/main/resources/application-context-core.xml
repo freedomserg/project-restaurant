@@ -65,6 +65,11 @@
         <property name="orderDao" ref="hOrderDao"/>
     </bean>
 
+    <!--hUserDao-->
+    <bean id="hUserDao" class="net.freedomserg.restaurant.core.model.hibernate.HuserDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <!--employeeService-->
     <bean id="employeeService" class="net.freedomserg.restaurant.core.service.EmployeeService">
         <property name="employeeDao" ref="hEmployeeDao"/>
@@ -108,6 +113,11 @@
     <!--orderUnitService-->
     <bean id="orderUnitService" class="net.freedomserg.restaurant.core.service.OrderUnitService">
         <property name="orderUnitDao" ref="hOrderUnitDao"/>
+    </bean>
+
+    <!--userService-->
+    <bean id="userService" class="net.freedomserg.restaurant.core.service.UserService">
+        <property name="userDao" ref="hUserDao"/>
     </bean>
 
 </beans>
