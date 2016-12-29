@@ -30,7 +30,4 @@
         <property name="dishDao" ref="hdishDao"/>
     </bean>
 
-
-
-
 </beans>

@@ -19,6 +19,16 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -28,6 +38,7 @@
         <param-value>
             /WEB-INF/application-context-user.xml
             /WEB-INF/hibernate-context-user.xml
+            /WEB-INF/security-context-user.xml
         </param-value>
     </context-param>
 
