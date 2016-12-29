@@ -1,7 +1,8 @@
-package net.freedomserg.restaurant.core.service;
+package net.freedomserg.restaurant.userLayer.web.security;
 
 import net.freedomserg.restaurant.core.model.entity.User;
 import net.freedomserg.restaurant.core.model.entity.UserProfile;
+import net.freedomserg.restaurant.core.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomUserDetailsService implements UserDetailsService {
+public class RestaurantUserDetailsService implements UserDetailsService {
 
     private UserService userService;
 
